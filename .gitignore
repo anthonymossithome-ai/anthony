@@ -286,8 +286,6 @@ tailwind.config = {
 </section>
 
 <!-- ================= CONTATO ================= -->
-```html
-<!-- ================= CONTATO ================= -->
 <section id="contato" class="border-t border-ink/10">
   <div class="mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 py-20 md:grid-cols-12 md:px-10 md:py-28">
 
@@ -459,6 +457,5 @@ tailwind.config = {
 </script>
 </body>
 </html>
-```
 
-Pronto — é um arquivo único, editorial, em português, com hero, destaques, galeria de looks, journal, sobre, contato e rodapé; se quiser, posso montar isso direto no seu projeto como páginas separadas.
+
