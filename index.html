@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR"> 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -354,7 +354,7 @@
 
   <li>
     <span class="text-[10px] uppercase tracking-[0.25em] text-muted">
-      Instagram
+      Instagra
     </span>
     <br>
     <a href="https://www.instagram.com/anth.mossi/"
@@ -369,11 +369,14 @@
         </ul>
       </div>
 
-      <form id="contactForm" class="reveal md:col-span-6 md:col-start-7">
+     <form id="contactForm"
+      class="reveal md:col-span-6 md:col-start-7"
+      action="https://formspree.io/f/xppzoojo"
+      method="POST">
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <label class="block">
             <span class="text-[10px] uppercase tracking-[0.25em] text-muted">Nome</span>
-            <input required type="text" name="nome" autocomplete="name"
+            <input required type="text" name="name" autocomplete="name"
                    class="mt-2 w-full border-b border-ink/25 bg-transparent py-2 text-sm outline-none focus:border-accent">
           </label>
 
@@ -386,13 +389,13 @@
 
         <label class="mt-6 block">
           <span class="text-[10px] uppercase tracking-[0.25em] text-muted">Assunto</span>
-          <input type="text" name="assunto"
+          <input type="text" name="subject"
                  class="mt-2 w-full border-b border-ink/25 bg-transparent py-2 text-sm outline-none focus:border-accent">
         </label>
 
         <label class="mt-6 block">
           <span class="text-[10px] uppercase tracking-[0.25em] text-muted">Mensagem</span>
-          <textarea required name="mensagem" rows="4"
+          <textarea required name="message" rows="4"
                     class="mt-2 w-full resize-none border-b border-ink/25 bg-transparent py-2 text-sm outline-none focus:border-accent"></textarea>
         </label>
 
@@ -498,11 +501,7 @@
 
     // Formulário de contato: demonstração local.
     // Não envia e-mail de verdade sem backend/serviço externo.
-    document.getElementById('contactForm').addEventListener('submit', (event) => {
-      event.preventDefault();
-      event.currentTarget.reset();
-      document.getElementById('okMsg').classList.remove('hidden');
-    });
+
 
     // Newsletter: demonstração local.
     // Não armazena e-mails sem backend/serviço externo.
