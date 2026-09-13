@@ -632,41 +632,17 @@
       document.getElementById('newsletterMsg').classList.remove('hidden');
     });
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
   const form = document.getElementById('pixForm');
   const pixArea = document.querySelector('#pix-area');
   const qrCodeArea = document.querySelector('#pix-qrcode');
 
-  const pixCopiaECola = const pixCopiaECola = '000201...seu_codigo_pix_completo...' ;
+<form id="pixForm" class="mt-8 space-y-4"
 
   form.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  qrCodeArea.innerHTML = '';
-
-  new QRCode(qrCodeArea, {
-    text: pixCopiaECola,
-    width: 208,
-    height: 208
-  });
-
-  pixArea.classList.remove('hidden');
-  pixArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-  fetch(form.action, {
-    method: 'POST',
-    body: new FormData(form),
-    headers: { Accept: 'application/json' }
-  });
-});
-
-    await fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form),
-      headers: { Accept: 'application/json' }
-    });
+    event.preventDefault();
 
     qrCodeArea.innerHTML = '';
 
@@ -678,6 +654,12 @@
 
     pixArea.classList.remove('hidden');
     pixArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { Accept: 'application/json' }
+    });
   });
 </script>
 </body>
