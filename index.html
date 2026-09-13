@@ -405,14 +405,14 @@
   <li>✓ Bastidores e materiais exclusivos</li>
 </ul>
 
-        <div class="mt-8 flex justify-center">
-  <img
-    src="WhatsApp Image 2026-09-11 at 20.54.47.jpeg"
-    alt="QR Code para pagamento via Pix"
-    class="h-52 w-52 object-contain">
+        <div id="pix-area" class="mt-8 hidden text-center">
+  <div id="pix-qrcode" class="flex justify-center"></div>
+  <p class="mt-4 text-sm text-ink/70">
+    Escaneie o QR Code para concluir o pagamento via Pix.
+  </p>
 </div>
 
-         <form class="mt-8 space-y-4"
+  <form id="pixForm" class="mt-8 space-y-4"
       action="https://formspree.io/f/xyeyvabb"
       method="POST">
 
@@ -632,5 +632,35 @@
       document.getElementById('newsletterMsg').classList.remove('hidden');
     });
   </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+  const form = document.getElementById('pixForm');
+  const pixArea = document.querySelector('#pix-area');
+  const qrCodeArea = document.querySelector('#pix-qrcode');
+
+  const pixCopiaECola = const pixCopiaECola = '000201...seu_codigo_pix_completo...' ;
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { Accept: 'application/json' }
+    });
+
+    qrCodeArea.innerHTML = '';
+
+    new QRCode(qrCodeArea, {
+      text: pixCopiaECola,
+      width: 208,
+      height: 208
+    });
+
+    pixArea.classList.remove('hidden');
+    pixArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+</script>
 </body>
 </html>
