@@ -13,11 +13,14 @@
 }
 
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "index, follow"
+        },
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
