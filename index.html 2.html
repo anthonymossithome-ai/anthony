@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+<head> 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SOMM — Revista de Moda, Estilo e Afins</title>
+  <meta name="description" content="SOMM é um diário editorial sobre moda, forma e estilo: looks, tendências, alfaiataria e entrevistas em português.">
+  <meta property="og:title" content="SOMM — Revista de Moda, Estilo e Afins">
+  <meta property="og:description" content="Looks, tendências, alfaiataria e entrevistas. Um diário editorial de moda em português.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Hanken+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: '#1a1817',
+            paper: '#f5f1ea',
+            'paper-soft': '#efe9df',
+            accent: '#9c4a2e',
+            muted: '#8a8378'
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Hanken Grotesk"', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+   <style>
+
+     /* ================================
+   JOURNAL — LEITURA DOS ARTIGOS
+================================ */
+
+.journal-card {
+  cursor: pointer;
+}
+
+.journal-card:focus {
+  outline: 2px solid #9c4a2e;
+  outline-offset: 6px;
+}
+
+.journal-card img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.journal-card:hover img {
+  transform: scale(1.04);
+}
+
+
+/* Modal */
+
+.journal-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  overflow-y: auto;
+  padding: 30px 16px;
+  background: rgba(20, 18, 16, 0.82);
+  backdrop-filter: blur(8px);
+}
+
+.journal-modal.active {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  animation: journalFadeIn 0.3s ease forwards;
+}
+
+.journal-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  background: #f5f1ea;
+  color: #1a1817;
+  padding: 24px;
+  animation: journalSlideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.journal-modal-content img {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+}
+
+.journal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(245, 241, 234, 0.5);
+  background: rgba(26, 24, 23, 0.75);
+  color: #f5f1ea;
+  cursor: pointer;
+  font-size: 20px;
+  transition: 0.3s ease;
+}
+
+.journal-close:hover {
+  background: #1a1817;
+  transform: rotate(90deg);
+}
+
+.journal-article {
+  max-width: 720px;
+  margin: 45px auto 20px;
+}
+
+.journal-article-category {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #9c4a2e;
+}
+
+.journal-article-title {
+  margin-top: 12px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.95;
+}
+
+.journal-article-meta {
+  margin-top: 18px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #8a8378;
+}
+
+.journal-article-body {
+  margin-top: 45px;
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.journal-article-body p {
+  margin-bottom: 26px;
+}
+
+.journal-article-body h2 {
+  margin-top: 48px;
+  margin-bottom: 18px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+@keyframes journalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes journalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .journal-modal {
+    padding: 12px;
+  }
+
+  .journal-modal-content {
+    padding: 16px;
+  }
+
+  .journal-article {
+    margin-top: 35px;
+  }
+
+  .journal-article-body {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+}
+     
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: #f5f1ea;
+    color: #1a1817;
+  }
+
+  /* ================= ANIMAÇÕES ================= */
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes imageReveal {
+    from {
+      opacity: 0;
+      clip-path: inset(0 0 100% 0);
+      transform: scale(1.04);
+    }
+
+    to {
+      opacity: 1;
+      clip-path: inset(0 0 0 0);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes lineReveal {
+    from {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+
+    to {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+
+  .reveal {
+    opacity: 0;
+  }
+
+  .reveal.in {
+    animation: fadeUp 0.9s cubic-bezier(.2,.6,.2,1) both;
+  }
+
+  /* Imagens */
+
+  .look {
+    overflow: hidden;
+  }
+
+  .look img {
+    transition:
+      transform 1s cubic-bezier(.2,.6,.2,1),
+      filter 0.8s ease;
+    will-change: transform;
+  }
+
+  .look:hover img {
+    transform: scale(1.045);
+    filter: saturate(1.08) contrast(1.02);
+  }
+
+  /* Revelação específica das imagens */
+
+  .image-reveal {
+    opacity: 0;
+  }
+
+  .image-reveal.in {
+    animation:
+      imageReveal 1.1s cubic-bezier(.2,.6,.2,1) both;
+  }
+
+  /* Links */
+
+  a {
+    transition:
+      color 0.35s ease,
+      opacity 0.35s ease;
+  }
+
+  /* Botões */
+
+  button {
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease,
+      transform 0.35s ease;
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+  }
+
+  /* Hero */
+
+  .hero-image {
+    transform: scale(1.02);
+    transition: transform 1.5s cubic-bezier(.2,.6,.2,1);
+    will-change: transform;
+  }
+
+  .hero-image.loaded {
+    transform: scale(1);
+  }
+
+  /* Linha decorativa */
+
+  .animated-line {
+    transform: scaleX(0);
+  }
+
+  .animated-line.in {
+    animation: lineReveal 1s cubic-bezier(.2,.6,.2,1) both;
+  }
+
+  /* Acessibilidade:
+     reduz animações para quem prefere menos movimento */
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+
+    .reveal,
+    .image-reveal {
+      opacity: 1;
+    }
+
+    .hero-image {
+      transform: none;
+    }
+  }
+</style>
+  
+<meta name="google-site-verification" content="q4m21YVXemUb-BCJC7QRt_MfoQ5PFyJy0GwECTbuvjo" />
+    </head>
+  <body class="font-sans antialiased selection:bg-accent selection:text-paper">
+
+
+  <header class="sticky top-0 z-50 border-b border-ink/10 bg-paper/85 backdrop-blur-md">
+    <div class="mx-auto flex max-w-[1440px] items-center justify-between px-6 py-5 md:px-10">
+      <a href="#inicio" class="font-serif text-2xl font-semibold tracking-tight">SOMM</a>
+
+      <nav class="hidden items-center gap-9 text-[12px] uppercase tracking-[0.2em] text-ink/70 md:flex">
+        <a href="#inicio" class="transition-colors hover:text-accent">Início</a>
+        <a href="#looks" class="transition-colors hover:text-accent">Looks</a>
+        <a href="#journal" class="transition-colors hover:text-accent">Journal</a>
+       <a href="#sobre" class="transition-colors hover:text-accent">Sobre</a>
+<a href="#assinatura" class="transition-colors hover:text-accent">Assinar</a>
+<a href="#contato" class="transition-colors hover:text-accent">Contato</a>
+      </nav>
+
+      <button id="btnMenu" type="button" aria-expanded="false" aria-controls="menuMobile"
+              class="text-[11px] uppercase tracking-[0.2em] md:hidden">
+        Menu
+      </button>
+    </div>
+
+    <div id="menuMobile" class="hidden border-t border-ink/10 px-6 pb-6 pt-2 md:hidden">
+      <a href="#inicio" class="block py-2 text-sm uppercase tracking-[0.2em] text-ink/70">Início</a>
+      <a href="#looks" class="block py-2 text-sm uppercase tracking-[0.2em] text-ink/70">Looks</a>
+      <a href="#journal" class="block py-2 text-sm uppercase tracking-[0.2em] text-ink/70">Journal</a>
+     <a href="#sobre" class="block py-2 text-sm uppercase tracking-[0.2em] text-ink/70">Sobre</a>
+<a href="#assinatura" class="block py-2 text-sm uppercase tracking-[0.2em] text-ink/70">Assinar</a>
+<a href="#contato" class="block py-2 text-sm uppercase tracking-[0.2em] text-ink/70">Contato</a> 
+    </div>
+  </header>
+
+  <section id="inicio" class="relative">
+   <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1920&q=80"
+     alt="Editorial de moda em tons neutros"
+     class="hero-image h-[78vh] w-full object-cover md:h-[86vh]">
+    <div class="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent"></div>
+
+    <div class="absolute inset-0 flex items-end">
+      <div class="mx-auto w-full max-w-[1440px] px-6 pb-12 md:px-10 md:pb-20">
+        <div class="reveal max-w-[46ch]">
+          <p class="mb-4 text-[11px] font-medium uppercase tracking-[0.35em] text-paper/80">Editorial · Nº 24</p>
+          <h1 class="font-serif text-5xl font-medium leading-[1.02] text-paper md:text-7xl">
+            O Silêncio<br>da Forma
+          </h1>
+          <p class="mt-6 max-w-[46ch] text-base leading-relaxed text-paper/80">
+            Uma edição sobre a quietude que habita o vestuário — tecidos que respiram,
+            cortes que dizem o suficiente e nada além.
+          </p>
+          <a href="#journal"
+             class="mt-8 inline-block border border-paper/70 px-6 py-3 text-[11px] uppercase tracking-[0.25em] text-paper transition-colors hover:bg-paper hover:text-ink">
+            Ler a edição
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[1440px] px-6 py-20 md:px-10 md:py-28">
+    <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+      <h2 class="reveal font-serif text-3xl font-medium md:text-5xl">Em Destaque</h2>
+      <span class="text-[11px] uppercase tracking-[0.25em] text-muted">Histórias selecionadas</span>
+    </div>
+
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-12">
+      <article class="reveal look md:col-span-7">
+        <div class="overflow-hidden rounded-sm bg-paper-soft">
+         <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1400&q=80"
+     alt="Alfaiataria em lã sob luz natural"
+     class="image-reveal aspect-[4/3] w-full object-cover"
+     loading="lazy">
+        </div>
+        <span class="mt-5 block text-[11px] uppercase tracking-[0.25em] text-accent">Entrevista</span>
+        <h3 class="mt-2 font-serif text-2xl font-medium md:text-4xl">A Costura Lenta</h3>
+        <p class="mt-3 max-w-[52ch] text-sm leading-relaxed text-ink/65">
+          Dentro de um ateliê onde um único casaco leva quarenta e um dias — e nenhuma
+          costura corre exatamente reta.
+        </p>
+      </article>
+
+      <div class="md:col-span-5 md:pl-8">
+        <article class="reveal look">
+          <div class="overflow-hidden rounded-sm bg-paper-soft">
+            <img src="https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?auto=format&fit=crop&w=1000&q=80"
+                 alt="Textura de lã tricotada à mão"
+                 class="aspect-[5/4] w-full object-cover"
+                 loading="lazy">
+          </div>
+          <span class="mt-5 block text-[11px] uppercase tracking-[0.25em] text-accent">Matéria</span>
+          <h3 class="mt-2 font-serif text-2xl font-medium md:text-3xl">A Lã que Fala</h3>
+          <p class="mt-3 text-sm leading-relaxed text-ink/65">
+            Três ateliês brasileiros redefinem o gesto artesanal a cada ponto.
+          </p>
+        </article>
+
+        <article class="reveal mt-10 border-t border-ink/10 pt-6">
+          <span class="text-[11px] uppercase tracking-[0.25em] text-accent">Coluna</span>
+          <h3 class="mt-2 font-serif text-xl font-medium">O Retorno do Linho</h3>
+          <p class="mt-2 text-sm text-ink/60">Por que o tecido mais antigo do armário voltou a ser o mais desejado.</p>
+        </article>
+
+        <article class="reveal mt-8 border-t border-ink/10 pt-6">
+          <span class="text-[11px] uppercase tracking-[0.25em] text-accent">Tendência</span>
+          <h3 class="mt-2 font-serif text-xl font-medium">Neutros que Não São Neutros</h3>
+          <p class="mt-2 text-sm text-ink/60">Aveia, argila, osso: a paleta que substituiu o preto total.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="looks" class="bg-ink">
+    <div class="mx-auto max-w-[1440px] px-6 py-20 md:px-10 md:py-28">
+      <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+        <h2 class="reveal font-serif text-3xl font-medium text-paper md:text-5xl">Looks do Momento</h2>
+        <span class="text-[11px] uppercase tracking-[0.25em] text-paper/50">Galeria · Temporada 07</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+        <figure class="reveal look">
+          <div class="overflow-hidden rounded-sm bg-paper-soft">
+            <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80"
+                 alt="Look em tons de ferrugem e creme"
+                 class="aspect-[3/4] w-full object-cover"
+                 loading="lazy">
+          </div>
+          <figcaption class="mt-3">
+            <p class="font-serif text-lg font-medium text-paper">Ferrugem &amp; Creme</p>
+            <p class="text-[11px] uppercase tracking-[0.2em] text-paper/45">Look 01 · Lã crua</p>
+          </figcaption>
+        </figure>
+
+        <figure class="reveal look md:mt-12">
+          <div class="overflow-hidden rounded-sm bg-paper-soft">
+            <img src="https://images.unsplash.com/photo-1495121605193-b116b5b9c5fe?auto=format&fit=crop&w=800&q=80"
+                 alt="Alfaiataria monocromática grafite"
+                 class="aspect-[3/4] w-full object-cover"
+                 loading="lazy">
+          </div>
+          <figcaption class="mt-3">
+            <p class="font-serif text-lg font-medium text-paper">Grafite</p>
+            <p class="text-[11px] uppercase tracking-[0.2em] text-paper/45">Look 02 · Alfaiataria</p>
+          </figcaption>
+        </figure>
+
+        <figure class="reveal look">
+          <div class="overflow-hidden rounded-sm bg-paper-soft">
+            <img src="https://images.unsplash.com/photo-1485462537746-965f33f7f6a7?auto=format&fit=crop&w=800&q=80">
+                
+          </div>
+          <figcaption class="mt-3">
+            <p class="font-serif text-lg font-medium text-paper">Aveia</p>
+            <p class="text-[11px] uppercase tracking-[0.2em] text-paper/45">Look 03 · Camadas</p>
+          </figcaption>
+        </figure>
+
+        <figure class="reveal look md:mt-12">
+          <div class="overflow-hidden rounded-sm bg-paper-soft">
+            <img src="https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?auto=format&fit=crop&w=800&q=80"
+                 alt="Vestido de seda drapeado em terracota"
+                 class="aspect-[3/4] w-full object-cover"
+                 loading="lazy">
+          </div>
+          <figcaption class="mt-3">
+            <p class="font-serif text-lg font-medium text-paper">Terracota</p>
+            <p class="text-[11px] uppercase tracking-[0.2em] text-paper/45">Look 04 · Seda</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-4xl px-6 py-24 text-center md:py-32">
+    <p class="reveal font-serif text-3xl italic leading-tight md:text-5xl">
+      "A moda é a única arte dentro da qual se pode viver."
+    </p>
+    <p class="mt-8 text-[11px] uppercase tracking-[0.4em] text-muted">— Carta da editora</p>
+  </section>
+
+  <section id="journal" class="border-t border-ink/10">
+    <div class="mx-auto max-w-[1440px] px-6 py-20 md:px-10 md:py-28">
+      <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
+        <h2 class="reveal font-serif text-3xl font-medium md:text-5xl">Journal</h2>
+        <span class="text-[11px] uppercase tracking-[0.25em] text-muted">Leituras recentes</span>
+      </div>
+
+      <!-- ================================
+     MODAL DOS ARTIGOS DO JOURNAL
+================================ -->
+
+<div
+  id="journalModal"
+  class="journal-modal"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="journalModalTitle"
+>
+  <div
+    class="absolute inset-0"
+    data-close-journal
+  ></div>
+
+  <article class="journal-modal-content">
+
+    <button
+      id="journalClose"
+      class="journal-close"
+      type="button"
+      aria-label="Fechar artigo"
+    >
+      ×
+    </button>
+
+    <img
+      id="journalModalImage"
+      src=""
+      alt=""
+    >
+
+    <div class="journal-article">
+
+      <p
+        id="journalModalCategory"
+        class="journal-article-category"
+      ></p>
+
+      <h2
+        id="journalModalTitle"
+        class="journal-article-title"
+      ></h2>
+
+      <p
+        id="journalModalMeta"
+        class="journal-article-meta"
+      ></p>
+
+      <div
+        id="journalModalBody"
+        class="journal-article-body"
+      ></div>
+
+    </div>
+
+  </article>
+</div>
+      
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-3">
+      <!-- ARTIGO 1 -->
+<article
+  class="reveal look journal-card"
+  data-journal="guarda-roupa"
+  tabindex="0"
+  role="button"
+  aria-label="Ler artigo: Como montar um guarda-roupa essencial"
+>
+  <img
+    src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=80"
+    alt="Peças dobradas em paleta neutra"
+    class="aspect-[4/3] w-full object-cover"
+  >
+
+  <div class="mt-5">
+    <p class="text-xs uppercase tracking-[0.2em] text-[#9c4a2e]">Guia</p>
+
+    <h3 class="mt-2 font-serif text-2xl">
+      Como montar um guarda-roupa essencial
+    </h3>
+
+    <p class="mt-3 text-sm leading-6 text-[#8a8378]">
+      Doze peças, uma década. O método de quem compra pouco e veste sempre.
+    </p>
+
+    <p class="mt-4 text-xs uppercase tracking-[0.15em] text-[#8a8378]">
+      08 min de leitura · Ler artigo →
+    </p>
+  </div>
+</article>
+
+
+<!-- ARTIGO 2 -->
+<article
+  class="reveal look journal-card"
+  data-journal="semana-moda"
+  tabindex="0"
+  role="button"
+  aria-label="Ler artigo: Bastidores da semana de moda"
+>
+  <img
+    src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80"
+    alt="Bastidores de desfile"
+    class="aspect-[4/3] w-full object-cover"
+  >
+
+  <div class="mt-5">
+    <p class="text-xs uppercase tracking-[0.2em] text-[#9c4a2e]">Semana</p>
+
+    <h3 class="mt-2 font-serif text-2xl">
+      Bastidores da semana de moda
+    </h3>
+
+    <p class="mt-3 text-sm leading-6 text-[#8a8378]">
+      O que aconteceu longe da passarela — e por que importa mais.
+    </p>
+
+    <p class="mt-4 text-xs uppercase tracking-[0.15em] text-[#8a8378]">
+      05 min de leitura · Ler artigo →
+    </p>
+  </div>
+</article>
+
+
+<!-- ARTIGO 3 -->
+<article
+  class="reveal look journal-card"
+  data-journal="oficio-couro"
+  tabindex="0"
+  role="button"
+  aria-label="Ler artigo: O ofício do couro no Brasil"
+>
+  <img
+    src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=80"
+    alt="Detalhe de costura em couro"
+    class="aspect-[4/3] w-full object-cover"
+  >
+
+  <div class="mt-5">
+    <p class="text-xs uppercase tracking-[0.2em] text-[#9c4a2e]">Ofício</p>
+
+    <h3 class="mt-2 font-serif text-2xl">
+      O ofício do couro no Brasil
+    </h3>
+
+    <p class="mt-3 text-sm leading-6 text-[#8a8378]">
+      De Franca a Belo Jardim: as mãos que ainda cortam sem molde.
+    </p>
+
+    <p class="mt-4 text-xs uppercase tracking-[0.15em] text-[#8a8378]">
+      11 min de leitura · Ler artigo →
+    </p>
+  </div>
+</article>
+          </div>
+          
+       </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="sobre" class="border-t border-ink/10 bg-paper-soft">
+    <div class="mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 py-20 md:grid-cols-12 md:px-10 md:py-28">
+      <div class="reveal md:col-span-5">
+        <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=1000&q=80"
+             alt="Ateliê de costura"
+             class="aspect-[4/5] w-full rounded-sm object-cover"
+             loading="lazy">
+      </div>
+
+      <div class="reveal md:col-span-6 md:col-start-7 md:self-center">
+        <p class="text-[11px] uppercase tracking-[0.3em] text-accent">Sobre a SOMM</p>
+        <h2 class="mt-4 font-serif text-3xl font-medium leading-tight md:text-5xl">Um diário sobre moda, forma e afetos</h2>
+        <p class="mt-6 text-sm leading-relaxed text-ink/70">
+          A SOMM é uma revista editorial independente publicada em português. Escrevemos sobre
+          alfaiataria, tecidos, ofício e as pessoas que vestem o que fazem — com o tempo que
+          cada história pede.
+        </p>
+        <p class="mt-4 text-sm leading-relaxed text-ink/70">
+          Sem pressa, sem tendência descartável. Publicamos oito edições por ano, impressas em
+          tiragem limitada e lidas em qualquer lugar.
+        </p>
+
+       
+      </div>
+    </div>
+  </section>
+<!-- CÓDIGO DO PREMIUM AQUI -->
+
+<section id="assinatura" class="border-t border-ink/10 bg-paper-soft">
+  <div class="mx-auto max-w-[1200px] px-6 py-20 md:px-10 md:py-28">
+
+    <div class="mb-12 text-center">
+      <p class="text-[11px] uppercase tracking-[0.3em] text-accent">Assine a SOMM</p>
+      <h2 class="mt-4 font-serif text-3xl font-medium md:text-5xl">
+        Escolha sua experiência
+      </h2>
+      <p class="mx-auto mt-5 max-w-[55ch] text-sm leading-relaxed text-ink/60">
+        Faça parte da SOMM. Escolha o acesso gratuito ou tenha uma experiência
+        completa com nossa assinatura Premium.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+
+      <!-- GRATUITA -->
+      <div class="border border-ink/15 p-8 md:p-10">
+        <p class="text-[11px] uppercase tracking-[0.25em] text-muted">
+         
+          SOMM Gratuita
+        </p>
+
+        <h3 class="mt-3 font-serif text-3xl">Acesso Livre</h3>
+
+        <p class="mt-3 text-sm text-ink/60">
+          R$ 0
+        </p>
+
+        <ul class="mt-8 space-y-3 text-sm text-ink/70">
+          <li>✓ Novidades da SOMM</li>
+          <li>✓ Artigos selecionados</li>
+          <li>✓ Avisos de novas edições</li>
+          <li>✓ Conteúdos por e-mail e WhatsApp</li>
+        </ul>
+
+  <form class="mt-8 space-y-4"
+  action="https://formspree.io/f/xyeyvabb"
+  method="POST">
+          
+          <input
+            type="tel"
+            name="whatsapp"
+            required
+            placeholder="Seu WhatsApp"
+            class="w-full border-b border-ink/25 bg-transparent py-3 text-sm outline-none focus:border-accent">
+
+          <button
+            type="submit"
+            class="w-full border border-ink px-6 py-3 text-[11px] uppercase tracking-[0.25em] transition-colors hover:bg-ink hover:text-paper">
+            Assinar gratuitamente
+          </button>
+        </form>
+      </div>
+
+  
+      <div class="border border-accent p-8 md:p-10">
+        <p class="text-[11px] uppercase tracking-[0.25em] text-accent">
+          
+          SOMM Premium
+        </p>
+
+        <h3 class="mt-3 font-serif text-3xl">Experiência Completa</h3>
+
+        <p class="mt-3 font-serif text-3xl">
+          R$ 10,99
+          <span class="font-sans text-sm text-ink/50">/mês</span>
+        </p>
+
+        
+
+        <ul class="mt-8 space-y-3 text-sm text-ink/70">
+  <li>✓ Tudo da assinatura gratuita</li>
+  <li>✓ Edições completas da SOMM</li>
+  <li>✓ Conteúdos exclusivos</li>
+  <li>✓ Entrevistas especiais</li>
+  <li>✓ Arquivo de edições anteriores</li>
+  <li>✓ Bastidores e materiais exclusivos</li>
+</ul>
+
+        <div id="pix-area" class="mt-8 hidden text-center">
+  <div id="pix-qrcode" class="flex justify-center"></div>
+  <p class="mt-4 text-sm text-ink/70">
+    Escaneie o QR Code para concluir o pagamento via Pix.
+  </p>
+</div>
+
+<form id="pixForm" class="mt-8 space-y-4"
+      action="https://formspree.io/f/xyeyvabb"
+      method="POST">
+
+          <input
+            type="tel"
+            name="whatsapp"
+            required
+            placeholder="Seu WhatsApp"
+            class="w-full border-b border-ink/25 bg-transparent py-3 text-sm outline-none focus:border-accent">
+
+          <button
+            type="submit"
+    class="w-full whitespace-nowrap bg-ink px-6 py-3 text-[11px] uppercase tracking-[0.15em] text-paper transition-opacity hover:opacity-80">
+  Assinar por R$ 10,99/mês
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+  <section id="contato" class="border-t border-ink/10">
+    <div class="mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 py-20 md:grid-cols-12 md:px-10 md:py-28">
+      <div class="reveal md:col-span-5">
+        <h2 class="font-serif text-3xl font-medium md:text-5xl">Contato</h2>
+        <p class="mt-5 max-w-[42ch] text-sm leading-relaxed text-ink/65">
+          Pautas, parcerias, imprensa ou simplesmente uma boa história de ateliê.
+          Respondemos toda correspondência.
+       </p>
+
+<ul class="mt-8 space-y-5 text-sm text-ink/70">
+  <li>
+    <span class="text-[10px] uppercase tracking-[0.25em] text-muted">
+      E-mail
+    </span>
+    <br>
+    <a href="mailto:thomemossianthony@gmail.com" class="hover:text-accent">
+      thomemossianthony@gmail.com
+    </a>
+  </li>
+
+  <li>
+    <span class="text-[10px] uppercase tracking-[0.25em] text-muted">
+      WhatsApp
+    </span>
+    <br>
+    <a href="https://wa.me/5554992640365"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="hover:text-accent">
+      +55 54 99264-0365
+    </a>
+  </li>
+
+  <li>
+    <span class="text-[10px] uppercase tracking-[0.25em] text-muted">
+      Instagram
+    </span>
+    <br>
+    <a href="https://www.instagram.com/anth.mossi/"
+       target="_blank"
+       rel="noopener noreferrer"
+       class="hover:text-accent">
+      @anth.mossi
+    </a>
+  </li>
+
+</ul>
+        <div class="mt-8 flex flex-wrap gap-3">
+          
+  <a href="https://wa.me/5554992640365"
+     target="_blank"
+     rel="noopener noreferrer"
+     class="border border-ink px-6 py-3 text-[11px] uppercase tracking-[0.25em] hover:bg-ink hover:text-paper">
+    WhatsApp
+  </a>
+
+  <a href="https://www.instagram.com/anth.mossi/"
+     target="_blank"
+     rel="noopener noreferrer"
+     class="border border-ink px-6 py-3 text-[11px] uppercase tracking-[0.25em] hover:bg-ink hover:text-paper">
+    Instagram
+  </a>
+</div>
+      </div>
+
+     <form id="contactForm"
+      class="reveal md:col-span-6 md:col-start-7"
+      action="https://formspree.io/f/xppzoojo"
+      method="POST">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <label class="block">
+            <span class="text-[10px] uppercase tracking-[0.25em] text-muted">Nome</span>
+            <input required type="text" name="name" autocomplete="name"
+                   class="mt-2 w-full border-b border-ink/25 bg-transparent py-2 text-sm outline-none focus:border-accent">
+          </label>
+
+          <label class="block">
+            <span class="text-[10px] uppercase tracking-[0.25em] text-muted">E-mail</span>
+            <input required type="email" name="email" autocomplete="email"
+                   class="mt-2 w-full border-b border-ink/25 bg-transparent py-2 text-sm outline-none focus:border-accent">
+          </label>
+        </div>
+
+        <label class="mt-6 block">
+          <span class="text-[10px] uppercase tracking-[0.25em] text-muted">Assunto</span>
+          <input type="text" name="subject"
+                 class="mt-2 w-full border-b border-ink/25 bg-transparent py-2 text-sm outline-none focus:border-accent">
+        </label>
+
+        <label class="mt-6 block">
+          <span class="text-[10px] uppercase tracking-[0.25em] text-muted">Mensagem</span>
+          <textarea required name="message" rows="4"
+                    class="mt-2 w-full resize-none border-b border-ink/25 bg-transparent py-2 text-sm outline-none focus:border-accent"></textarea>
+        </label>
+
+        <button type="submit"
+                class="mt-8 border border-ink px-7 py-3 text-[11px] uppercase tracking-[0.25em] transition-colors hover:bg-ink hover:text-paper">
+          Enviar mensagem
+        </button>
+
+        <p id="okMsg" class="mt-4 hidden text-sm text-accent" role="status">
+          Mensagem preparada. Para envio real, conecte este formulário a um serviço de formulário ou backend.
+        </p>
+      </form>
+    </div>
+  </section>
+
+ <footer class="border-t border-ink/15 bg-ink text-paper">
+  <div class="mx-auto max-w-[1440px] px-6 py-16 text-center md:px-10 md:py-20">
+    <span class="font-serif text-3xl font-semibold">SOMM</span>
+
+    <p class="mx-auto mt-4 max-w-[40ch] text-sm leading-relaxed text-paper/60">
+      Um diário editorial sobre moda, forma e afetos. Publicado em português, feito com calma.
+    </p>
+
+    <div class="mt-14 border-t border-paper/15 pt-6 text-[10px] uppercase tracking-[0.25em] text-paper/40">
+      © 2026 SOMM Editorial. Todos os direitos reservados.
+    </div>
+  </div>
+</footer>
+
+  <script>
+    // Menu mobile
+    const btnMenu = document.getElementById('btnMenu');
+    const menuMobile = document.getElementById('menuMobile');
+
+    btnMenu.addEventListener('click', () => {
+      const isHidden = menuMobile.classList.toggle('hidden');
+      btnMenu.setAttribute('aria-expanded', String(!isHidden));
+    });
+
+    // Fecha o menu ao clicar em um link
+    menuMobile.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuMobile.classList.add('hidden');
+        btnMenu.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Revelação suave no scroll
+    const revealElements = document.querySelectorAll('.reveal');
+
+    if ('IntersectionObserver' in window) {
+
+      const revealObserver = new IntersectionObserver(
+        (entries, observer) => {
+
+          entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+
+              entry.target.classList.add('in');
+
+              observer.unobserve(entry.target);
+
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.12
+        }
+      );
+
+      revealElements.forEach(element => {
+        revealObserver.observe(element);
+      });
+
+    } else {
+
+      revealElements.forEach(element => {
+        element.classList.add('in');
+      });
+
+    }
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    const form = document.getElementById('pixForm');
+    const pixArea = document.getElementById('pix-area');
+    const qrCodeArea = document.getElementById('pix-qrcode');
+
+    const pixCopiaECola = 'Copia e Cola 54992640365';
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      qrCodeArea.innerHTML = '';
+
+      new QRCode(qrCodeArea, {
+        text: pixCopiaECola,
+        width: 208,
+        height: 208
+      });
+
+      pixArea.classList.remove('hidden');
+      pixArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  </script>
+
+  <script>
+/* ================================
+   JOURNAL — ABRIR ARTIGOS
+================================ */
+
+const journalArticles = {
+
+  "guarda-roupa": {
+    category: "Guia",
+    title: "Como montar um guarda-roupa essencial",
+    meta: "08 min de leitura",
+    image: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1200&q=85",
+    alt: "Peças dobradas em paleta neutra",
+
+    body: `
+      <p>
+        Existe uma espécie de silêncio em um guarda-roupa bem construído.
+        Não é o silêncio da ausência, mas o da escolha. As peças estão ali
+        porque precisam estar — não porque chegaram acompanhadas de uma
+        tendência, uma estação ou uma vontade passageira.
+      </p>
+
+      <p>
+        Construir um guarda-roupa essencial começa por uma pergunta simples:
+        o que permanece quando todo o excesso desaparece?
+      </p>
+
+      <h2>Menos, mas melhor</h2>
+
+      <p>
+        A ideia de um guarda-roupa essencial não significa possuir poucas
+        roupas por obrigação. Significa conhecer aquilo que funciona para você.
+      </p>
+
+      <p>
+        Uma camisa branca pode atravessar anos sem perder sua razão de existir.
+        Uma calça de boa modelagem pode acompanhar diferentes sapatos, casacos
+        e proporções. Um blazer pode mudar completamente dependendo do que
+        existe por baixo dele.
+      </p>
+
+      <p>
+        O valor está menos na quantidade e mais nas possibilidades.
+      </p>
+
+      <p>
+        Escolher bem também significa prestar atenção ao tecido. Algodão, lã,
+        linho, couro e seda possuem comportamentos diferentes diante do corpo
+        e do tempo. Algumas peças envelhecem; outras simplesmente amadurecem.
+      </p>
+
+      <h2>As doze peças</h2>
+
+      <p>
+        Não existe uma fórmula universal. Mas existe um ponto de partida.
+      </p>
+
+      <p>
+        Uma camisa branca. Uma camisa azul ou em tom neutro. Duas camisetas de
+        boa construção. Uma calça de alfaiataria. Uma calça de tecido mais
+        casual. Um jeans. Um casaco de lã. Um blazer. Uma peça de tricô.
+        Um sapato que atravesse ocasiões. Um tênis simples.
+      </p>
+
+      <p>
+        E uma peça que não tenha nenhuma função além de fazer você querer
+        vesti-la. A última talvez seja a mais importante.
+      </p>
+
+      <p>
+        Um guarda-roupa não deve ser apenas eficiente. Ele também precisa
+        conter alguma personalidade.
+      </p>
+
+      <h2>A repetição como linguagem</h2>
+
+      <p>
+        Vestir bem não depende de surpreender todos os dias.
+      </p>
+
+      <p>
+        Há uma elegância particular em repetir. A mesma camisa em uma terça-feira
+        qualquer. O mesmo casaco durante uma semana fria. A mesma calça que
+        começa a adquirir pequenas marcas do corpo.
+      </p>
+
+      <p>
+        Quando uma peça é realmente sua, ela deixa de parecer nova e passa
+        a parecer familiar.
+      </p>
+
+      <p>
+        É nesse ponto que a roupa deixa de ser apenas objeto.
+      </p>
+
+      <h2>Comprar pensando no tempo</h2>
+
+      <p>
+        Antes de uma compra, vale imaginar a peça daqui a cinco anos.
+      </p>
+
+      <p>
+        Ela continuará fazendo sentido? O tecido suportará o uso? A construção
+        permite reparos? A modelagem conversa com aquilo que você já possui?
+      </p>
+
+      <p>
+        Comprar menos também significa aprender a esperar.
+      </p>
+
+      <p>
+        Nem toda vontade precisa virar aquisição. Algumas desaparecem depois
+        de alguns dias. Outras permanecem — e talvez sejam justamente essas
+        que mereçam espaço.
+      </p>
+
+      <h2>O armário como extensão</h2>
+
+      <p>
+        No fim, um guarda-roupa essencial não é uma lista.
+        É uma coleção de escolhas repetidas ao longo do tempo.
+      </p>
+
+      <p>
+        Ele muda conforme mudamos. Uma camisa pode permanecer enquanto o modo
+        de usá-la se transforma. Uma peça esquecida pode retornar anos depois
+        com uma nova leitura.
+      </p>
+
+      <p>
+        Talvez seja esse o verdadeiro essencial: aquilo que continua
+        encontrando lugar.
+      </p>
+
+      <p>
+        Não porque está na moda.
+        <br>
+        Mas porque ainda diz alguma coisa sobre quem veste.
+      </p>
+    `
+  },
+
+
+  "semana-moda": {
+    category: "Semana",
+    title: "Bastidores da semana de moda",
+    meta: "05 min de leitura",
+    image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200&q=85",
+    alt: "Bastidores de desfile",
+
+    body: `
+      <p>
+        Existe uma semana de moda que aparece nas fotografias e outra que
+        começa quando as luzes se apagam.
+      </p>
+
+      <p>
+        É nos corredores, nas salas de prova, nos camarins e nas mesas
+        improvisadas que uma coleção realmente começa a adquirir corpo.
+      </p>
+
+      <p>
+        Antes do primeiro modelo atravessar a passarela, existe uma sucessão
+        de pequenos gestos: uma barra ajustada, um botão trocado, uma manga
+        dobrada, uma peça que precisa ser refeita poucos minutos antes da
+        apresentação.
+      </p>
+
+      <p>
+        A roupa chega ao público pronta.
+        <br>
+        O processo, não.
+      </p>
+
+      <h2>Antes das luzes</h2>
+
+      <p>
+        Horas antes do desfile, o espaço costuma ter outra atmosfera.
+      </p>
+
+      <p>
+        Não existe ainda o silêncio organizado da apresentação. Há cabides,
+        caixas, tecidos, sapatos, maquiagem e pessoas conferindo detalhes
+        pela última vez.
+      </p>
+
+      <p>
+        Uma coleção que no desfile parece precisa e inevitável pode ter passado
+        por dezenas de correções.
+      </p>
+
+      <p>
+        É uma parte pouco visível da moda: a precisão nasce do improviso.
+      </p>
+
+      <h2>O corpo muda a roupa</h2>
+
+      <p>
+        No papel, uma peça possui medidas.
+        <br>
+        No corpo, possui movimento.
+      </p>
+
+      <p>
+        É por isso que as provas são tão importantes. Um casaco pode parecer
+        perfeito parado e revelar outra proporção quando os braços se
+        movimentam.
+      </p>
+
+      <p>
+        Uma calça pode precisar de poucos centímetros para alterar
+        completamente a postura.
+      </p>
+
+      <p>
+        A roupa não existe isoladamente.
+        Ela depende de quem a veste.
+      </p>
+
+      <h2>O detalhe que ninguém vê</h2>
+
+      <p>
+        Há uma espécie de trabalho invisível por trás de cada look.
+      </p>
+
+      <p>
+        Alguém passou horas escolhendo uma textura. Outra pessoa conferiu
+        uma costura. Uma equipe organizou a sequência das entradas.
+        Um profissional ajustou uma peça pouco antes de ela aparecer.
+      </p>
+
+      <p>
+        Talvez ninguém perceba.
+      </p>
+
+      <p>
+        E esse é justamente o ponto.
+      </p>
+
+      <p>
+        Quando o trabalho é bem feito, ele desaparece dentro da roupa.
+      </p>
+
+      <h2>Depois da passarela</h2>
+
+      <p>
+        Quando o último look deixa o espaço, a coleção continua existindo.
+      </p>
+
+      <p>
+        As peças retornam aos cabides. Os sapatos são guardados. As pessoas
+        começam a desmontar aquilo que levou semanas para ser preparado.
+      </p>
+
+      <p>
+        As fotografias, porém, permanecem.
+      </p>
+
+      <p>
+        É nesse momento que começa outra etapa: a interpretação.
+      </p>
+
+      <p>
+        O que será lembrado? Qual silhueta encontrará espaço fora da passarela?
+        Qual tecido continuará interessante quando a temporada terminar?
+      </p>
+
+      <h2>A moda longe do espetáculo</h2>
+
+      <p>
+        Talvez acompanhar uma semana de moda seja menos sobre descobrir o
+        próximo grande movimento e mais sobre observar como uma ideia é construída.
+      </p>
+
+      <p>
+        A passarela mostra o resultado.
+        <br>
+        Os bastidores mostram a pergunta.
+      </p>
+
+      <p>
+        E, no fundo, é ali que a moda permanece mais humana: nas mãos que
+        corrigem, nas pessoas que esperam, nos erros que precisam ser refeitos
+        e nas pequenas decisões que ninguém vê.
+      </p>
+
+      <p>
+        A roupa chega ao palco por alguns segundos.
+        O trabalho para fazê-la chegar até ali permanece muito mais tempo.
+      </p>
+    `
+  },
+
+
+  "oficio-couro": {
+    category: "Ofício",
+    title: "O ofício do couro no Brasil",
+    meta: "11 min de leitura",
+    image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1200&q=85",
+    alt: "Detalhe de costura em couro",
+
+    body: `
+      <p>
+        O couro carrega uma memória particular.
+      </p>
+
+      <p>
+        Antes de ser sapato, bolsa, cinto ou jaqueta, foi matéria.
+        Possuía textura, espessura, marcas e uma superfície que não podia
+        ser completamente prevista.
+      </p>
+
+      <p>
+        Trabalhar com couro é, em parte, aprender a aceitar essas diferenças.
+      </p>
+
+      <p>
+        No Brasil, o ofício atravessa regiões, gerações e maneiras distintas
+        de produzir. Algumas oficinas trabalham em escala industrial. Outras
+        preservam processos pequenos, nos quais uma peça passa pelas mãos de
+        poucas pessoas antes de chegar ao seu destino.
+      </p>
+
+      <p>
+        Entre essas duas realidades existe algo difícil de medir:
+        o conhecimento.
+      </p>
+
+      <h2>A matéria não é uniforme</h2>
+
+      <p>
+        Diferentemente de um tecido produzido em uma superfície regular,
+        o couro possui características próprias.
+      </p>
+
+      <p>
+        Há marcas, diferenças de espessura e variações de textura.
+        O corte precisa considerar aquilo que a matéria oferece.
+      </p>
+
+      <p>
+        O bom trabalho começa antes da ferramenta.
+        Começa na observação.
+      </p>
+
+      <p>
+        Quem trabalha com couro aprende a reconhecer essas diferenças quase
+        como quem aprende uma linguagem. Sabe onde cortar, onde evitar,
+        como aproveitar uma área e como posicionar determinada parte da peça.
+      </p>
+
+      <h2>O corte</h2>
+
+      <p>
+        Cortar é uma das etapas mais definitivas.
+      </p>
+
+      <p>
+        Depois que a lâmina atravessa a matéria, não existe simplesmente
+        um retorno ao estado anterior.
+      </p>
+
+      <p>
+        Por isso, a experiência importa.
+      </p>
+
+      <p>
+        Uma pequena alteração pode mudar a proporção de uma peça inteira.
+        O corte precisa respeitar o desenho, mas também a resistência,
+        a direção e as características do couro.
+      </p>
+
+      <p>
+        É um trabalho de precisão, mas não de rigidez.
+        Existe espaço para decisão.
+      </p>
+
+      <h2>Franca e a tradição do calçado</h2>
+
+      <p>
+        Franca, no interior de São Paulo, tornou-se conhecida pela tradição
+        ligada à produção de calçados.
+      </p>
+
+      <p>
+        Ali, o couro encontra outra escala de trabalho. Oficinas, fábricas,
+        profissionais especializados e uma cadeia inteira se relacionam
+        ao longo do processo.
+      </p>
+
+      <p>
+        O sapato terminado parece um objeto simples.
+        Mas sua construção reúne muitas etapas.
+      </p>
+
+      <p>
+        Corte, preparação, montagem, costura, acabamento.
+      </p>
+
+      <p>
+        Cada uma exige uma habilidade diferente.
+        E cada habilidade deixa uma pequena marca no resultado final.
+      </p>
+
+      <h2>Belo Jardim e outras paisagens</h2>
+
+      <p>
+        Em Belo Jardim, em Pernambuco, a relação com o couro aparece dentro
+        de outra paisagem e de outra tradição produtiva.
+      </p>
+
+      <p>
+        O Brasil possui muitos desses territórios de conhecimento.
+        Alguns são conhecidos nacionalmente; outros sobrevivem quase
+        silenciosamente, sustentados por pequenas oficinas e famílias que
+        aprenderam o trabalho dentro de casa.
+      </p>
+
+      <p>
+        Existe uma geografia do fazer.
+        Ela não aparece nos mapas comuns.
+      </p>
+
+      <p>
+        É feita de oficinas, ferramentas, fornecedores, mestres e aprendizes.
+      </p>
+
+      <h2>O tempo da mão</h2>
+
+      <p>
+        Talvez a principal diferença entre o objeto industrial e aquele
+        produzido em pequena escala esteja no tempo.
+      </p>
+
+      <p>
+        Não necessariamente porque um seja melhor que o outro, mas porque
+        o processo manual permite uma relação diferente com a matéria.
+      </p>
+
+      <p>
+        A mão percebe.
+        <br>
+        A mão corrige.
+        <br>
+        A mão interrompe.
+      </p>
+
+      <p>
+        Uma costura pode ser refeita porque alguma coisa não parece certa.
+        Uma borda pode receber outro acabamento.
+      </p>
+
+      <p>
+        Esse tempo também faz parte do objeto.
+      </p>
+
+      <h2>O couro depois</h2>
+
+      <p>
+        Uma das características mais interessantes do couro é aquilo que
+        acontece depois que a peça deixa a oficina.
+      </p>
+
+      <p>
+        Ele muda.
+      </p>
+
+      <p>
+        Ganha marcas. Escurece em determinados pontos. Adquire brilho onde
+        o corpo toca com frequência. Pequenas imperfeições começam a contar
+        uma história.
+      </p>
+
+      <p>
+        É uma matéria que registra o uso.
+      </p>
+
+      <p>
+        Talvez por isso exista algo de particular em um objeto de couro antigo.
+        Ele não parece simplesmente velho.
+        Parece vivido.
+      </p>
+
+      <h2>O futuro do ofício</h2>
+
+      <p>
+        Preservar um ofício não significa congelá-lo.
+      </p>
+
+      <p>
+        As ferramentas mudam. Os mercados mudam. As necessidades também.
+      </p>
+
+      <p>
+        O que permanece é o conhecimento de transformar matéria em objeto.
+      </p>
+
+      <p>
+        Enquanto houver alguém disposto a aprender como cortar, costurar,
+        moldar e reparar, o ofício continua.
+      </p>
+
+      <p>
+        Não como nostalgia.
+        <br>
+        Mas como prática.
+      </p>
+
+      <p>
+        O couro atravessa o tempo porque alguém ainda dedica tempo a ele.
+      </p>
+
+      <p>
+        E, em uma época cada vez mais acelerada, talvez essa seja sua
+        qualidade mais rara.
+      </p>
+    `
+  }
+
+};
+
+
+/* Elementos */
+
+const journalModal = document.getElementById("journalModal");
+const journalClose = document.getElementById("journalClose");
+
+const journalModalImage =
+  document.getElementById("journalModalImage");
+
+const journalModalCategory =
+  document.getElementById("journalModalCategory");
+
+const journalModalTitle =
+  document.getElementById("journalModalTitle");
+
+const journalModalMeta =
+  document.getElementById("journalModalMeta");
+
+const journalModalBody =
+  document.getElementById("journalModalBody");
+
+
+/* Abrir */
+
+function openJournalArticle(articleId) {
+
+  const article = journalArticles[articleId];
+
+  if (!article) return;
+
+  journalModalImage.src = article.image;
+  journalModalImage.alt = article.alt;
+
+  journalModalCategory.textContent = article.category;
+  journalModalTitle.textContent = article.title;
+  journalModalMeta.textContent = article.meta;
+
+  journalModalBody.innerHTML = article.body;
+
+  journalModal.classList.add("active");
+  journalModal.setAttribute("aria-hidden", "false");
+
+  document.body.style.overflow = "hidden";
+
+  journalClose.focus(); 
+}
+
+
+/* Fechar */
+
+function closeJournalArticle() {
+
+  journalModal.classList.remove("active");
+  journalModal.setAttribute("aria-hidden", "true");
+
+  document.body.style.overflow = "";
+
+}
+
+
+/* Clique nos artigos */
+
+document.querySelectorAll(".journal-card").forEach(card => {
+
+  card.addEventListener("click", () => {
+    openJournalArticle(card.dataset.journal);
+  });
+
+  card.addEventListener("keydown", event => {
+
+    if (event.key === "Enter" || event.key === " ") {
+
+      event.preventDefault();
+
+      openJournalArticle(card.dataset.journal);
+
+    }
+
+  });
+
+});
+
+
+/* Botão fechar */
+
+journalClose.addEventListener("click", closeJournalArticle);
+
+
+/* Clique fora do artigo */
+
+document.querySelectorAll("[data-close-journal]").forEach(element => {
+
+  element.addEventListener("click", closeJournalArticle);
+
+});
+
+
+/* ESC */
+
+document.addEventListener("keydown", event => {
+
+  if (
+    event.key === "Escape" &&
+    journalModal.classList.contains("active")
+  ) {
+
+    closeJournalArticle();
+
+  }
+
+});
+</script>
+</body>
+</html>
