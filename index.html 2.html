@@ -1942,7 +1942,7 @@ document.addEventListener("keydown", event => {
   const canvas = document.getElementById('heroFrames');
   const ctx = canvas.getContext('2d');
   const frameCount = 30;
-  const fps = 24; // ajuste: mais alto = mais rápido/fluido
+  const fps = 10; // ajuste: mais alto = mais rápido/fluido
   const getFrameSrc = i => `/frame-${String(i).padStart(4, '0')}.jpg`;
 
   const images = [];
