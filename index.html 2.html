@@ -58,6 +58,15 @@
   transform: scale(1.04);
 }
 
+.look-card {
+  cursor: pointer;
+}
+
+.look-card:focus {
+  outline: 2px solid #9c4a2e;
+  outline-offset: 6px;
+}
+
 
 /* Modal */
 
@@ -478,11 +487,45 @@
         <span class="text-[11px] uppercase tracking-[0.25em] text-paper/50">Galeria · Temporada 07</span>
       </div>
 
+      <!-- ================================
+     MODAL DOS LOOKS
+================================ -->
+
+      <div
+        id="lookModal"
+        class="journal-modal"
+        aria-hidden="true"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="lookModalTitle"
+      >
+        <div class="absolute inset-0" data-close-look></div>
+
+        <article class="journal-modal-content">
+          <button id="lookClose" class="journal-close" type="button" aria-label="Fechar look">×</button>
+
+          <img id="lookModalImage" src="" alt="">
+
+          <div class="journal-article">
+            <p id="lookModalCategory" class="journal-article-category"></p>
+            <h2 id="lookModalTitle" class="journal-article-title"></h2>
+            <p id="lookModalMeta" class="journal-article-meta"></p>
+            <div id="lookModalBody" class="journal-article-body"></div>
+          </div>
+        </article>
+      </div>
+
       <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-        <figure class="reveal look">
+        <figure
+          class="reveal look look-card"
+          data-look="ferrugem-creme"
+          tabindex="0"
+          role="button"
+          aria-label="Ver look: Ferrugem & Creme"
+        >
           <div class="overflow-hidden rounded-sm bg-paper-soft">
-            <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=800&q=80"
-                 alt="Look em tons de ferrugem e creme"
+            <img src="https://images.unsplash.com/photo-1578079471680-66fdf43c87f3?auto=format&fit=crop&crop=faces&w=800&q=80"
+                 alt="Look em tons de ferrugem e creme, cardigã de lã crua"
                  class="aspect-[3/4] w-full object-cover"
                  loading="lazy">
           </div>
@@ -492,9 +535,15 @@
           </figcaption>
         </figure>
 
-        <figure class="reveal look md:mt-12">
+        <figure
+          class="reveal look look-card md:mt-12"
+          data-look="grafite"
+          tabindex="0"
+          role="button"
+          aria-label="Ver look: Grafite"
+        >
           <div class="overflow-hidden rounded-sm bg-paper-soft">
-            <img src="https://images.unsplash.com/photo-1495121605193-b116b5b9c5fe?auto=format&fit=crop&w=800&q=80"
+            <img src="https://images.unsplash.com/photo-1622497170185-5d668f816a56?auto=format&fit=crop&crop=faces&w=800&q=80"
                  alt="Alfaiataria monocromática grafite"
                  class="aspect-[3/4] w-full object-cover"
                  loading="lazy">
@@ -505,10 +554,18 @@
           </figcaption>
         </figure>
 
-        <figure class="reveal look">
+        <figure
+          class="reveal look look-card"
+          data-look="aveia"
+          tabindex="0"
+          role="button"
+          aria-label="Ver look: Aveia"
+        >
           <div class="overflow-hidden rounded-sm bg-paper-soft">
-            <img src="https://images.unsplash.com/photo-1485462537746-965f33f7f6a7?auto=format&fit=crop&w=800&q=80">
-                
+            <img src="https://images.unsplash.com/photo-1606254094195-33682e329ae1?auto=format&fit=crop&crop=faces&w=800&q=80"
+                 alt="Look em camadas de tons aveia"
+                 class="aspect-[3/4] w-full object-cover"
+                 loading="lazy">
           </div>
           <figcaption class="mt-3">
             <p class="font-serif text-lg font-medium text-paper">Aveia</p>
@@ -516,9 +573,15 @@
           </figcaption>
         </figure>
 
-        <figure class="reveal look md:mt-12">
+        <figure
+          class="reveal look look-card md:mt-12"
+          data-look="terracota"
+          tabindex="0"
+          role="button"
+          aria-label="Ver look: Terracota"
+        >
           <div class="overflow-hidden rounded-sm bg-paper-soft">
-            <img src="https://images.unsplash.com/photo-1502716119720-b23a93e5fe1b?auto=format&fit=crop&w=800&q=80"
+            <img src="https://images.unsplash.com/photo-1538331269258-6c97a6bdeae0?auto=format&fit=crop&crop=faces&w=800&q=80"
                  alt="Vestido de seda drapeado em terracota"
                  class="aspect-[3/4] w-full object-cover"
                  loading="lazy">
@@ -1676,6 +1739,194 @@ document.addEventListener("keydown", event => {
   ) {
 
     closeJournalArticle();
+
+  }
+
+});
+</script>
+
+<script>
+/* ================================
+   LOOKS — ABRIR DETALHE DO LOOK
+================================ */
+
+const lookDetails = {
+
+  "ferrugem-creme": {
+    category: "Look 01 · Lã crua",
+    title: "Ferrugem & Creme",
+    meta: "Temporada 07",
+    image: "https://images.unsplash.com/photo-1578079471680-66fdf43c87f3?auto=format&fit=crop&crop=faces&w=1200&q=85",
+    alt: "Look em tons de ferrugem e creme, cardigã de lã crua",
+
+    body: `
+      <p>
+        Um cardigã de lã crua em tom de ferrugem, aberto sobre uma base neutra em creme.
+        O contraste é quente e terroso — cores que lembram folhas secas e argila queimada.
+      </p>
+      <p>
+        A textura da lã é o ponto central do look: irregular, quase rústica, pensada para
+        ganhar caráter com o uso e o tempo.
+      </p>
+    `
+  },
+
+  "grafite": {
+    category: "Look 02 · Alfaiataria",
+    title: "Grafite",
+    meta: "Temporada 07",
+    image: "https://images.unsplash.com/photo-1622497170185-5d668f816a56?auto=format&fit=crop&crop=faces&w=1200&q=85",
+    alt: "Alfaiataria monocromática grafite",
+
+    body: `
+      <p>
+        Alfaiataria monocromática em cinza-grafite, dos ombros à barra. Um look que aposta
+        na precisão do corte em vez do excesso de detalhes.
+      </p>
+      <p>
+        A construção é o que sustenta a peça: linhas retas, caimento limpo e uma paleta que
+        não disputa atenção com a forma.
+      </p>
+    `
+  },
+
+  "aveia": {
+    category: "Look 03 · Camadas",
+    title: "Aveia",
+    meta: "Temporada 07",
+    image: "https://images.unsplash.com/photo-1606254094195-33682e329ae1?auto=format&fit=crop&crop=faces&w=1200&q=85",
+    alt: "Look em camadas de tons aveia",
+
+    body: `
+      <p>
+        Camadas sobrepostas em variações do mesmo tom aveia — um casaco solto por cima de
+        peças mais leves, sem cortes que interrompam a paleta.
+      </p>
+      <p>
+        É um look pensado para o movimento: cada camada pode ser retirada sem que o
+        conjunto perca sentido.
+      </p>
+    `
+  },
+
+  "terracota": {
+    category: "Look 04 · Seda",
+    title: "Terracota",
+    meta: "Temporada 07",
+    image: "https://images.unsplash.com/photo-1538331269258-6c97a6bdeae0?auto=format&fit=crop&crop=faces&w=1200&q=85",
+    alt: "Vestido de seda drapeado em terracota",
+
+    body: `
+      <p>
+        Seda drapeada em terracota, com caimento fluido que acompanha o corpo em vez de
+        estruturá-lo. A cor remete à cerâmica e ao barro queimado ao sol.
+      </p>
+      <p>
+        Um look para ocasiões em que o movimento do tecido importa tanto quanto o corte.
+      </p>
+    `
+  }
+
+};
+
+
+/* Elementos */
+
+const lookModal = document.getElementById("lookModal");
+const lookClose = document.getElementById("lookClose");
+
+const lookModalImage = document.getElementById("lookModalImage");
+const lookModalCategory = document.getElementById("lookModalCategory");
+const lookModalTitle = document.getElementById("lookModalTitle");
+const lookModalMeta = document.getElementById("lookModalMeta");
+const lookModalBody = document.getElementById("lookModalBody");
+
+
+/* Abrir */
+
+function openLook(lookId) {
+
+  const look = lookDetails[lookId];
+
+  if (!look) return;
+
+  lookModalImage.src = look.image;
+  lookModalImage.alt = look.alt;
+
+  lookModalCategory.textContent = look.category;
+  lookModalTitle.textContent = look.title;
+  lookModalMeta.textContent = look.meta;
+
+  lookModalBody.innerHTML = look.body;
+
+  lookModal.classList.add("active");
+  lookModal.setAttribute("aria-hidden", "false");
+
+  document.body.style.overflow = "hidden";
+
+  lookClose.focus();
+}
+
+
+/* Fechar */
+
+function closeLook() {
+
+  lookModal.classList.remove("active");
+  lookModal.setAttribute("aria-hidden", "true");
+
+  document.body.style.overflow = "";
+
+}
+
+
+/* Clique nos looks */
+
+document.querySelectorAll(".look-card").forEach(card => {
+
+  card.addEventListener("click", () => {
+    openLook(card.dataset.look);
+  });
+
+  card.addEventListener("keydown", event => {
+
+    if (event.key === "Enter" || event.key === " ") {
+
+      event.preventDefault();
+
+      openLook(card.dataset.look);
+
+    }
+
+  });
+
+});
+
+
+/* Botão fechar */
+
+lookClose.addEventListener("click", closeLook);
+
+
+/* Clique fora do look */
+
+document.querySelectorAll("[data-close-look]").forEach(element => {
+
+  element.addEventListener("click", closeLook);
+
+});
+
+
+/* ESC */
+
+document.addEventListener("keydown", event => {
+
+  if (
+    event.key === "Escape" &&
+    lookModal.classList.contains("active")
+  ) {
+
+    closeLook();
 
   }
 
