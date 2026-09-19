@@ -429,25 +429,7 @@
   </div>
 </section>
 
-    <div class="absolute inset-0 flex items-end">
-      <div class="mx-auto w-full max-w-[1440px] px-6 pb-12 md:px-10 md:pb-20">
-        <div class="reveal max-w-[46ch]">
-          <p class="mb-4 text-[11px] font-medium uppercase tracking-[0.35em] text-paper/80">Editorial · Nº 24</p>
-          <h1 class="font-serif text-5xl font-medium leading-[1.02] text-paper md:text-7xl">
-            O Silêncio<br>da Forma
-          </h1>
-          <p class="mt-6 max-w-[46ch] text-base leading-relaxed text-paper/80">
-            Uma edição sobre a quietude que habita o vestuário — tecidos que respiram,
-            cortes que dizem o suficiente e nada além.
-          </p>
-          <a href="#journal"
-             class="mt-8 inline-block border border-paper/70 px-6 py-3 text-[11px] uppercase tracking-[0.25em] text-paper transition-colors hover:bg-paper hover:text-ink">
-            Ler a edição
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+ 
 
   <section class="mx-auto max-w-[1440px] px-6 py-20 md:px-10 md:py-28">
     <div class="mb-12 flex flex-wrap items-end justify-between gap-4">
@@ -1960,7 +1942,77 @@ document.addEventListener("keydown", event => {
 <script>
 (function () {
   const canvas = document.getElementById('heroFrames');
-  ...
+  const ctx = canvas.getContext('2d');
+  const frameCount = 30;
+  const getFrameSrc = i => `/frame-${String(i).padStart(4, '0')}.jpg`;
+
+  const images = [];
+  let ready = false;
+
+  function preloadImages() {
+    for (let i = 1; i <= frameCount; i++) {
+      const img = new Image();
+      img.src = getFrameSrc(i);
+      if (i === 1) {
+        img.onload = () => {
+          ready = true;
+          resizeCanvas();
+          drawFrame(0);
+        };
+      }
+      images.push(img);
+    }
+  }
+
+  function resizeCanvas() {
+    canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
+    canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
+  }
+
+  function drawFrame(index) {
+    const img = images[index];
+    if (!img || !img.complete || img.naturalWidth === 0) return;
+
+    const canvasRatio = canvas.width / canvas.height;
+    const imgRatio = img.naturalWidth / img.naturalHeight;
+    let sx, sy, sWidth, sHeight;
+
+    if (imgRatio > canvasRatio) {
+      sHeight = img.naturalHeight;
+      sWidth = sHeight * canvasRatio;
+      sx = (img.naturalWidth - sWidth) / 2;
+      sy = 0;
+    } else {
+      sWidth = img.naturalWidth;
+      sHeight = sWidth / canvasRatio;
+      sx = 0;
+      sy = (img.naturalHeight - sHeight) / 2;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
+  }
+
+  function updateFrameOnScroll() {
+    if (!ready) return;
+
+    const section = document.getElementById('inicio');
+    const rect = section.getBoundingClientRect();
+    const scrollableDistance = section.offsetHeight - window.innerHeight;
+    const scrolled = Math.min(Math.max(-rect.top, 0), scrollableDistance);
+    const progress = scrollableDistance > 0 ? scrolled / scrollableDistance : 0;
+
+    const frameIndex = Math.min(frameCount - 1, Math.floor(progress * frameCount));
+    requestAnimationFrame(() => drawFrame(frameIndex));
+  }
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    updateFrameOnScroll();
+  });
+
+  window.addEventListener('scroll', updateFrameOnScroll, { passive: true });
+
   preloadImages();
 })();
 </script>
