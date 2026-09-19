@@ -402,28 +402,26 @@
     </div>
   </header>
 
-  <section id="inicio" class="relative h-[300vh]">
-  <div class="sticky top-0 h-screen w-full overflow-hidden">
-    <canvas id="heroFrames" class="absolute inset-0 h-full w-full"></canvas>
+ <section id="inicio" class="relative">
+  <canvas id="heroFrames" class="hero-image h-[78vh] w-full object-cover md:h-[86vh]"></canvas>
 
-    <div class="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent"></div>
 
-    <div class="absolute inset-0 flex items-end">
-      <div class="mx-auto w-full max-w-[1440px] px-6 pb-12 md:px-10 md:pb-20">
-        <div class="reveal max-w-[46ch]">
-          <p class="mb-4 text-[11px] font-medium uppercase tracking-[0.35em] text-paper/80">Editorial · Nº 24</p>
-          <h1 class="font-serif text-5xl font-medium leading-[1.02] text-paper md:text-7xl">
-            O Silêncio<br>da Forma
-          </h1>
-          <p class="mt-6 max-w-[46ch] text-base leading-relaxed text-paper/80">
-            Uma edição sobre a quietude que habita o vestuário — tecidos que respiram,
-            cortes que dizem o suficiente e nada além.
-          </p>
-          <a href="#journal"
-             class="mt-8 inline-block border border-paper/70 px-6 py-3 text-[11px] uppercase tracking-[0.25em] text-paper transition-colors hover:bg-paper hover:text-ink">
-            Ler a edição
-          </a>
-        </div>
+  <div class="absolute inset-0 flex items-end">
+    <div class="mx-auto w-full max-w-[1440px] px-6 pb-12 md:px-10 md:pb-20">
+      <div class="reveal max-w-[46ch]">
+        <p class="mb-4 text-[11px] font-medium uppercase tracking-[0.35em] text-paper/80">Editorial · Nº 24</p>
+        <h1 class="font-serif text-5xl font-medium leading-[1.02] text-paper md:text-7xl">
+          O Silêncio<br>da Forma
+        </h1>
+        <p class="mt-6 max-w-[46ch] text-base leading-relaxed text-paper/80">
+          Uma edição sobre a quietude que habita o vestuário — tecidos que respiram,
+          cortes que dizem o suficiente e nada além.
+        </p>
+        <a href="#journal"
+           class="mt-8 inline-block border border-paper/70 px-6 py-3 text-[11px] uppercase tracking-[0.25em] text-paper transition-colors hover:bg-paper hover:text-ink">
+          Ler a edição
+        </a>
       </div>
     </div>
   </div>
@@ -1944,22 +1942,27 @@ document.addEventListener("keydown", event => {
   const canvas = document.getElementById('heroFrames');
   const ctx = canvas.getContext('2d');
   const frameCount = 30;
+  const fps = 24; // ajuste: mais alto = mais rápido/fluido
   const getFrameSrc = i => `/frame-${String(i).padStart(4, '0')}.jpg`;
 
   const images = [];
   let ready = false;
+  let currentFrame = 0;
+  let lastTime = 0;
 
   function preloadImages() {
+    let loadedCount = 0;
     for (let i = 1; i <= frameCount; i++) {
       const img = new Image();
       img.src = getFrameSrc(i);
-      if (i === 1) {
-        img.onload = () => {
+      img.onload = () => {
+        loadedCount++;
+        if (loadedCount === frameCount) {
           ready = true;
           resizeCanvas();
-          drawFrame(0);
-        };
-      }
+          requestAnimationFrame(animate);
+        }
+      };
       images.push(img);
     }
   }
@@ -1993,25 +1996,23 @@ document.addEventListener("keydown", event => {
     ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
   }
 
-  function updateFrameOnScroll() {
-    if (!ready) return;
+  function animate(time) {
+    if (!lastTime) lastTime = time;
+    const elapsed = time - lastTime;
 
-    const section = document.getElementById('inicio');
-    const rect = section.getBoundingClientRect();
-    const scrollableDistance = section.offsetHeight - window.innerHeight;
-    const scrolled = Math.min(Math.max(-rect.top, 0), scrollableDistance);
-    const progress = scrollableDistance > 0 ? scrolled / scrollableDistance : 0;
+    if (elapsed > 1000 / fps) {
+      drawFrame(currentFrame);
+      currentFrame = (currentFrame + 1) % frameCount; // loop infinito
+      lastTime = time;
+    }
 
-    const frameIndex = Math.min(frameCount - 1, Math.floor(progress * frameCount));
-    requestAnimationFrame(() => drawFrame(frameIndex));
+    requestAnimationFrame(animate);
   }
 
   window.addEventListener('resize', () => {
     resizeCanvas();
-    updateFrameOnScroll();
+    if (ready) drawFrame(currentFrame);
   });
-
-  window.addEventListener('scroll', updateFrameOnScroll, { passive: true });
 
   preloadImages();
 })();
