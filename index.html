@@ -36,6 +36,172 @@
   </script>
 
    <style>
+
+     /* ================================
+   JOURNAL — LEITURA DOS ARTIGOS
+================================ */
+
+.journal-card {
+  cursor: pointer;
+}
+
+.journal-card:focus {
+  outline: 2px solid #9c4a2e;
+  outline-offset: 6px;
+}
+
+.journal-card img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.journal-card:hover img {
+  transform: scale(1.04);
+}
+
+
+/* Modal */
+
+.journal-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  overflow-y: auto;
+  padding: 30px 16px;
+  background: rgba(20, 18, 16, 0.82);
+  backdrop-filter: blur(8px);
+}
+
+.journal-modal.active {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  animation: journalFadeIn 0.3s ease forwards;
+}
+
+.journal-modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+  background: #f5f1ea;
+  color: #1a1817;
+  padding: 24px;
+  animation: journalSlideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.journal-modal-content img {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+}
+
+.journal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(245, 241, 234, 0.5);
+  background: rgba(26, 24, 23, 0.75);
+  color: #f5f1ea;
+  cursor: pointer;
+  font-size: 20px;
+  transition: 0.3s ease;
+}
+
+.journal-close:hover {
+  background: #1a1817;
+  transform: rotate(90deg);
+}
+
+.journal-article {
+  max-width: 720px;
+  margin: 45px auto 20px;
+}
+
+.journal-article-category {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #9c4a2e;
+}
+
+.journal-article-title {
+  margin-top: 12px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.95;
+}
+
+.journal-article-meta {
+  margin-top: 18px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #8a8378;
+}
+
+.journal-article-body {
+  margin-top: 45px;
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.journal-article-body p {
+  margin-bottom: 26px;
+}
+
+.journal-article-body h2 {
+  margin-top: 48px;
+  margin-bottom: 18px;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+@keyframes journalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes journalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .journal-modal {
+    padding: 12px;
+  }
+
+  .journal-modal-content {
+    padding: 16px;
+  }
+
+  .journal-article {
+    margin-top: 35px;
+  }
+
+  .journal-article-body {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+}
+     
   html {
     scroll-behavior: smooth;
   }
@@ -380,26 +546,162 @@
         <span class="text-[11px] uppercase tracking-[0.25em] text-muted">Leituras recentes</span>
       </div>
 
-      <div class="grid grid-cols-1 gap-10 md:grid-cols-3">
-        <article class="reveal look">
-          <div class="overflow-hidden rounded-sm bg-paper-soft">
-            <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=80"
-                 alt="Peças dobradas em paleta neutra"
-                 class="aspect-[4/3] w-full object-cover"
-                 loading="lazy">
-          </div>
-          <p class="mt-4 text-[11px] uppercase tracking-[0.25em] text-accent">Guia</p>
-          <h3 class="mt-2 font-serif text-2xl font-medium">Como montar um guarda-roupa essencial</h3>
-          <p class="mt-2 text-sm leading-relaxed text-ink/60">Doze peças, uma década. O método de quem compra pouco e veste sempre.</p>
-          <p class="mt-3 text-[11px] uppercase tracking-[0.2em] text-muted">08 min de leitura</p>
-        </article>
+      <!-- ================================
+     MODAL DOS ARTIGOS DO JOURNAL
+================================ -->
 
-        <article class="reveal look">
-          <div class="overflow-hidden rounded-sm bg-paper-soft">
-            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80"
-                 alt="Bastidores de desfile"
-                 class="aspect-[4/3] w-full object-cover"
-                 loading="lazy">
+<div
+  id="journalModal"
+  class="journal-modal"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="journalModalTitle"
+>
+  <div
+    class="absolute inset-0"
+    data-close-journal
+  ></div>
+
+  <article class="journal-modal-content">
+
+    <button
+      id="journalClose"
+      class="journal-close"
+      type="button"
+      aria-label="Fechar artigo"
+    >
+      ×
+    </button>
+
+    <img
+      id="journalModalImage"
+      src=""
+      alt=""
+    >
+
+    <div class="journal-article">
+
+      <p
+        id="journalModalCategory"
+        class="journal-article-category"
+      ></p>
+
+      <h2
+        id="journalModalTitle"
+        class="journal-article-title"
+      ></h2>
+
+      <p
+        id="journalModalMeta"
+        class="journal-article-meta"
+      ></p>
+
+      <div
+        id="journalModalBody"
+        class="journal-article-body"
+      ></div>
+
+    </div>
+
+  </article>
+</div>
+      
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-3">
+      <!-- ARTIGO 1 -->
+<article
+  class="reveal look journal-card"
+  data-journal="guarda-roupa"
+  tabindex="0"
+  role="button"
+  aria-label="Ler artigo: Como montar um guarda-roupa essencial"
+>
+  <img
+    src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=80"
+    alt="Peças dobradas em paleta neutra"
+    class="aspect-[4/3] w-full object-cover"
+  >
+
+  <div class="mt-5">
+    <p class="text-xs uppercase tracking-[0.2em] text-[#9c4a2e]">Guia</p>
+
+    <h3 class="mt-2 font-serif text-2xl">
+      Como montar um guarda-roupa essencial
+    </h3>
+
+    <p class="mt-3 text-sm leading-6 text-[#8a8378]">
+      Doze peças, uma década. O método de quem compra pouco e veste sempre.
+    </p>
+
+    <p class="mt-4 text-xs uppercase tracking-[0.15em] text-[#8a8378]">
+      08 min de leitura · Ler artigo →
+    </p>
+  </div>
+</article>
+
+
+<!-- ARTIGO 2 -->
+<article
+  class="reveal look journal-card"
+  data-journal="semana-moda"
+  tabindex="0"
+  role="button"
+  aria-label="Ler artigo: Bastidores da semana de moda"
+>
+  <img
+    src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80"
+    alt="Bastidores de desfile"
+    class="aspect-[4/3] w-full object-cover"
+  >
+
+  <div class="mt-5">
+    <p class="text-xs uppercase tracking-[0.2em] text-[#9c4a2e]">Semana</p>
+
+    <h3 class="mt-2 font-serif text-2xl">
+      Bastidores da semana de moda
+    </h3>
+
+    <p class="mt-3 text-sm leading-6 text-[#8a8378]">
+      O que aconteceu longe da passarela — e por que importa mais.
+    </p>
+
+    <p class="mt-4 text-xs uppercase tracking-[0.15em] text-[#8a8378]">
+      05 min de leitura · Ler artigo →
+    </p>
+  </div>
+</article>
+
+
+<!-- ARTIGO 3 -->
+<article
+  class="reveal look journal-card"
+  data-journal="oficio-couro"
+  tabindex="0"
+  role="button"
+  aria-label="Ler artigo: O ofício do couro no Brasil"
+>
+  <img
+    src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=80"
+    alt="Detalhe de costura em couro"
+    class="aspect-[4/3] w-full object-cover"
+  >
+
+  <div class="mt-5">
+    <p class="text-xs uppercase tracking-[0.2em] text-[#9c4a2e]">Ofício</p>
+
+    <h3 class="mt-2 font-serif text-2xl">
+      O ofício do couro no Brasil
+    </h3>
+
+    <p class="mt-3 text-sm leading-6 text-[#8a8378]">
+      De Franca a Belo Jardim: as mãos que ainda cortam sem molde.
+    </p>
+
+    <p class="mt-4 text-xs uppercase tracking-[0.15em] text-[#8a8378]">
+      11 min de leitura · Ler artigo →
+    </p>
+  </div>
+</article>
           </div>
           <p class="mt-4 text-[11px] uppercase tracking-[0.25em] text-accent">Semana</p>
           <h3 class="mt-2 font-serif text-2xl font-medium">Bastidores da semana de moda</h3>
@@ -736,6 +1038,639 @@ if ('IntersectionObserver' in window) {
     pixArea.classList.remove('hidden');
     pixArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
+  <script>
+/* ================================
+   JOURNAL — ABRIR ARTIGOS
+================================ */
+
+const journalArticles = {
+
+  "guarda-roupa": {
+    category: "Guia",
+    title: "Como montar um guarda-roupa essencial",
+    meta: "08 min de leitura",
+    image: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1200&q=85",
+    alt: "Peças dobradas em paleta neutra",
+
+    body: `
+      <p>
+        Existe uma espécie de silêncio em um guarda-roupa bem construído.
+        Não é o silêncio da ausência, mas o da escolha. As peças estão ali
+        porque precisam estar — não porque chegaram acompanhadas de uma
+        tendência, uma estação ou uma vontade passageira.
+      </p>
+
+      <p>
+        Construir um guarda-roupa essencial começa por uma pergunta simples:
+        o que permanece quando todo o excesso desaparece?
+      </p>
+
+      <h2>Menos, mas melhor</h2>
+
+      <p>
+        A ideia de um guarda-roupa essencial não significa possuir poucas
+        roupas por obrigação. Significa conhecer aquilo que funciona para você.
+      </p>
+
+      <p>
+        Uma camisa branca pode atravessar anos sem perder sua razão de existir.
+        Uma calça de boa modelagem pode acompanhar diferentes sapatos, casacos
+        e proporções. Um blazer pode mudar completamente dependendo do que
+        existe por baixo dele.
+      </p>
+
+      <p>
+        O valor está menos na quantidade e mais nas possibilidades.
+      </p>
+
+      <p>
+        Escolher bem também significa prestar atenção ao tecido. Algodão, lã,
+        linho, couro e seda possuem comportamentos diferentes diante do corpo
+        e do tempo. Algumas peças envelhecem; outras simplesmente amadurecem.
+      </p>
+
+      <h2>As doze peças</h2>
+
+      <p>
+        Não existe uma fórmula universal. Mas existe um ponto de partida.
+      </p>
+
+      <p>
+        Uma camisa branca. Uma camisa azul ou em tom neutro. Duas camisetas de
+        boa construção. Uma calça de alfaiataria. Uma calça de tecido mais
+        casual. Um jeans. Um casaco de lã. Um blazer. Uma peça de tricô.
+        Um sapato que atravesse ocasiões. Um tênis simples.
+      </p>
+
+      <p>
+        E uma peça que não tenha nenhuma função além de fazer você querer
+        vesti-la. A última talvez seja a mais importante.
+      </p>
+
+      <p>
+        Um guarda-roupa não deve ser apenas eficiente. Ele também precisa
+        conter alguma personalidade.
+      </p>
+
+      <h2>A repetição como linguagem</h2>
+
+      <p>
+        Vestir bem não depende de surpreender todos os dias.
+      </p>
+
+      <p>
+        Há uma elegância particular em repetir. A mesma camisa em uma terça-feira
+        qualquer. O mesmo casaco durante uma semana fria. A mesma calça que
+        começa a adquirir pequenas marcas do corpo.
+      </p>
+
+      <p>
+        Quando uma peça é realmente sua, ela deixa de parecer nova e passa
+        a parecer familiar.
+      </p>
+
+      <p>
+        É nesse ponto que a roupa deixa de ser apenas objeto.
+      </p>
+
+      <h2>Comprar pensando no tempo</h2>
+
+      <p>
+        Antes de uma compra, vale imaginar a peça daqui a cinco anos.
+      </p>
+
+      <p>
+        Ela continuará fazendo sentido? O tecido suportará o uso? A construção
+        permite reparos? A modelagem conversa com aquilo que você já possui?
+      </p>
+
+      <p>
+        Comprar menos também significa aprender a esperar.
+      </p>
+
+      <p>
+        Nem toda vontade precisa virar aquisição. Algumas desaparecem depois
+        de alguns dias. Outras permanecem — e talvez sejam justamente essas
+        que mereçam espaço.
+      </p>
+
+      <h2>O armário como extensão</h2>
+
+      <p>
+        No fim, um guarda-roupa essencial não é uma lista.
+        É uma coleção de escolhas repetidas ao longo do tempo.
+      </p>
+
+      <p>
+        Ele muda conforme mudamos. Uma camisa pode permanecer enquanto o modo
+        de usá-la se transforma. Uma peça esquecida pode retornar anos depois
+        com uma nova leitura.
+      </p>
+
+      <p>
+        Talvez seja esse o verdadeiro essencial: aquilo que continua
+        encontrando lugar.
+      </p>
+
+      <p>
+        Não porque está na moda.
+        <br>
+        Mas porque ainda diz alguma coisa sobre quem veste.
+      </p>
+    `
+  },
+
+
+  "semana-moda": {
+    category: "Semana",
+    title: "Bastidores da semana de moda",
+    meta: "05 min de leitura",
+    image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=1200&q=85",
+    alt: "Bastidores de desfile",
+
+    body: `
+      <p>
+        Existe uma semana de moda que aparece nas fotografias e outra que
+        começa quando as luzes se apagam.
+      </p>
+
+      <p>
+        É nos corredores, nas salas de prova, nos camarins e nas mesas
+        improvisadas que uma coleção realmente começa a adquirir corpo.
+      </p>
+
+      <p>
+        Antes do primeiro modelo atravessar a passarela, existe uma sucessão
+        de pequenos gestos: uma barra ajustada, um botão trocado, uma manga
+        dobrada, uma peça que precisa ser refeita poucos minutos antes da
+        apresentação.
+      </p>
+
+      <p>
+        A roupa chega ao público pronta.
+        <br>
+        O processo, não.
+      </p>
+
+      <h2>Antes das luzes</h2>
+
+      <p>
+        Horas antes do desfile, o espaço costuma ter outra atmosfera.
+      </p>
+
+      <p>
+        Não existe ainda o silêncio organizado da apresentação. Há cabides,
+        caixas, tecidos, sapatos, maquiagem e pessoas conferindo detalhes
+        pela última vez.
+      </p>
+
+      <p>
+        Uma coleção que no desfile parece precisa e inevitável pode ter passado
+        por dezenas de correções.
+      </p>
+
+      <p>
+        É uma parte pouco visível da moda: a precisão nasce do improviso.
+      </p>
+
+      <h2>O corpo muda a roupa</h2>
+
+      <p>
+        No papel, uma peça possui medidas.
+        <br>
+        No corpo, possui movimento.
+      </p>
+
+      <p>
+        É por isso que as provas são tão importantes. Um casaco pode parecer
+        perfeito parado e revelar outra proporção quando os braços se
+        movimentam.
+      </p>
+
+      <p>
+        Uma calça pode precisar de poucos centímetros para alterar
+        completamente a postura.
+      </p>
+
+      <p>
+        A roupa não existe isoladamente.
+        Ela depende de quem a veste.
+      </p>
+
+      <h2>O detalhe que ninguém vê</h2>
+
+      <p>
+        Há uma espécie de trabalho invisível por trás de cada look.
+      </p>
+
+      <p>
+        Alguém passou horas escolhendo uma textura. Outra pessoa conferiu
+        uma costura. Uma equipe organizou a sequência das entradas.
+        Um profissional ajustou uma peça pouco antes de ela aparecer.
+      </p>
+
+      <p>
+        Talvez ninguém perceba.
+      </p>
+
+      <p>
+        E esse é justamente o ponto.
+      </p>
+
+      <p>
+        Quando o trabalho é bem feito, ele desaparece dentro da roupa.
+      </p>
+
+      <h2>Depois da passarela</h2>
+
+      <p>
+        Quando o último look deixa o espaço, a coleção continua existindo.
+      </p>
+
+      <p>
+        As peças retornam aos cabides. Os sapatos são guardados. As pessoas
+        começam a desmontar aquilo que levou semanas para ser preparado.
+      </p>
+
+      <p>
+        As fotografias, porém, permanecem.
+      </p>
+
+      <p>
+        É nesse momento que começa outra etapa: a interpretação.
+      </p>
+
+      <p>
+        O que será lembrado? Qual silhueta encontrará espaço fora da passarela?
+        Qual tecido continuará interessante quando a temporada terminar?
+      </p>
+
+      <h2>A moda longe do espetáculo</h2>
+
+      <p>
+        Talvez acompanhar uma semana de moda seja menos sobre descobrir o
+        próximo grande movimento e mais sobre observar como uma ideia é construída.
+      </p>
+
+      <p>
+        A passarela mostra o resultado.
+        <br>
+        Os bastidores mostram a pergunta.
+      </p>
+
+      <p>
+        E, no fundo, é ali que a moda permanece mais humana: nas mãos que
+        corrigem, nas pessoas que esperam, nos erros que precisam ser refeitos
+        e nas pequenas decisões que ninguém vê.
+      </p>
+
+      <p>
+        A roupa chega ao palco por alguns segundos.
+        O trabalho para fazê-la chegar até ali permanece muito mais tempo.
+      </p>
+    `
+  },
+
+
+  "oficio-couro": {
+    category: "Ofício",
+    title: "O ofício do couro no Brasil",
+    meta: "11 min de leitura",
+    image: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=1200&q=85",
+    alt: "Detalhe de costura em couro",
+
+    body: `
+      <p>
+        O couro carrega uma memória particular.
+      </p>
+
+      <p>
+        Antes de ser sapato, bolsa, cinto ou jaqueta, foi matéria.
+        Possuía textura, espessura, marcas e uma superfície que não podia
+        ser completamente prevista.
+      </p>
+
+      <p>
+        Trabalhar com couro é, em parte, aprender a aceitar essas diferenças.
+      </p>
+
+      <p>
+        No Brasil, o ofício atravessa regiões, gerações e maneiras distintas
+        de produzir. Algumas oficinas trabalham em escala industrial. Outras
+        preservam processos pequenos, nos quais uma peça passa pelas mãos de
+        poucas pessoas antes de chegar ao seu destino.
+      </p>
+
+      <p>
+        Entre essas duas realidades existe algo difícil de medir:
+        o conhecimento.
+      </p>
+
+      <h2>A matéria não é uniforme</h2>
+
+      <p>
+        Diferentemente de um tecido produzido em uma superfície regular,
+        o couro possui características próprias.
+      </p>
+
+      <p>
+        Há marcas, diferenças de espessura e variações de textura.
+        O corte precisa considerar aquilo que a matéria oferece.
+      </p>
+
+      <p>
+        O bom trabalho começa antes da ferramenta.
+        Começa na observação.
+      </p>
+
+      <p>
+        Quem trabalha com couro aprende a reconhecer essas diferenças quase
+        como quem aprende uma linguagem. Sabe onde cortar, onde evitar,
+        como aproveitar uma área e como posicionar determinada parte da peça.
+      </p>
+
+      <h2>O corte</h2>
+
+      <p>
+        Cortar é uma das etapas mais definitivas.
+      </p>
+
+      <p>
+        Depois que a lâmina atravessa a matéria, não existe simplesmente
+        um retorno ao estado anterior.
+      </p>
+
+      <p>
+        Por isso, a experiência importa.
+      </p>
+
+      <p>
+        Uma pequena alteração pode mudar a proporção de uma peça inteira.
+        O corte precisa respeitar o desenho, mas também a resistência,
+        a direção e as características do couro.
+      </p>
+
+      <p>
+        É um trabalho de precisão, mas não de rigidez.
+        Existe espaço para decisão.
+      </p>
+
+      <h2>Franca e a tradição do calçado</h2>
+
+      <p>
+        Franca, no interior de São Paulo, tornou-se conhecida pela tradição
+        ligada à produção de calçados.
+      </p>
+
+      <p>
+        Ali, o couro encontra outra escala de trabalho. Oficinas, fábricas,
+        profissionais especializados e uma cadeia inteira se relacionam
+        ao longo do processo.
+      </p>
+
+      <p>
+        O sapato terminado parece um objeto simples.
+        Mas sua construção reúne muitas etapas.
+      </p>
+
+      <p>
+        Corte, preparação, montagem, costura, acabamento.
+      </p>
+
+      <p>
+        Cada uma exige uma habilidade diferente.
+        E cada habilidade deixa uma pequena marca no resultado final.
+      </p>
+
+      <h2>Belo Jardim e outras paisagens</h2>
+
+      <p>
+        Em Belo Jardim, em Pernambuco, a relação com o couro aparece dentro
+        de outra paisagem e de outra tradição produtiva.
+      </p>
+
+      <p>
+        O Brasil possui muitos desses territórios de conhecimento.
+        Alguns são conhecidos nacionalmente; outros sobrevivem quase
+        silenciosamente, sustentados por pequenas oficinas e famílias que
+        aprenderam o trabalho dentro de casa.
+      </p>
+
+      <p>
+        Existe uma geografia do fazer.
+        Ela não aparece nos mapas comuns.
+      </p>
+
+      <p>
+        É feita de oficinas, ferramentas, fornecedores, mestres e aprendizes.
+      </p>
+
+      <h2>O tempo da mão</h2>
+
+      <p>
+        Talvez a principal diferença entre o objeto industrial e aquele
+        produzido em pequena escala esteja no tempo.
+      </p>
+
+      <p>
+        Não necessariamente porque um seja melhor que o outro, mas porque
+        o processo manual permite uma relação diferente com a matéria.
+      </p>
+
+      <p>
+        A mão percebe.
+        <br>
+        A mão corrige.
+        <br>
+        A mão interrompe.
+      </p>
+
+      <p>
+        Uma costura pode ser refeita porque alguma coisa não parece certa.
+        Uma borda pode receber outro acabamento.
+      </p>
+
+      <p>
+        Esse tempo também faz parte do objeto.
+      </p>
+
+      <h2>O couro depois</h2>
+
+      <p>
+        Uma das características mais interessantes do couro é aquilo que
+        acontece depois que a peça deixa a oficina.
+      </p>
+
+      <p>
+        Ele muda.
+      </p>
+
+      <p>
+        Ganha marcas. Escurece em determinados pontos. Adquire brilho onde
+        o corpo toca com frequência. Pequenas imperfeições começam a contar
+        uma história.
+      </p>
+
+      <p>
+        É uma matéria que registra o uso.
+      </p>
+
+      <p>
+        Talvez por isso exista algo de particular em um objeto de couro antigo.
+        Ele não parece simplesmente velho.
+        Parece vivido.
+      </p>
+
+      <h2>O futuro do ofício</h2>
+
+      <p>
+        Preservar um ofício não significa congelá-lo.
+      </p>
+
+      <p>
+        As ferramentas mudam. Os mercados mudam. As necessidades também.
+      </p>
+
+      <p>
+        O que permanece é o conhecimento de transformar matéria em objeto.
+      </p>
+
+      <p>
+        Enquanto houver alguém disposto a aprender como cortar, costurar,
+        moldar e reparar, o ofício continua.
+      </p>
+
+      <p>
+        Não como nostalgia.
+        <br>
+        Mas como prática.
+      </p>
+
+      <p>
+        O couro atravessa o tempo porque alguém ainda dedica tempo a ele.
+      </p>
+
+      <p>
+        E, em uma época cada vez mais acelerada, talvez essa seja sua
+        qualidade mais rara.
+      </p>
+    `
+  }
+
+};
+
+
+/* Elementos */
+
+const journalModal = document.getElementById("journalModal");
+const journalClose = document.getElementById("journalClose");
+
+const journalModalImage =
+  document.getElementById("journalModalImage");
+
+const journalModalCategory =
+  document.getElementById("journalModalCategory");
+
+const journalModalTitle =
+  document.getElementById("journalModalTitle");
+
+const journalModalMeta =
+  document.getElementById("journalModalMeta");
+
+const journalModalBody =
+  document.getElementById("journalModalBody");
+
+
+/* Abrir */
+
+function openJournalArticle(articleId) {
+
+  const article = journalArticles[articleId];
+
+  if (!article) return;
+
+  journalModalImage.src = article.image;
+  journalModalImage.alt = article.alt;
+
+  journalModalCategory.textContent = article.category;
+  journalModalTitle.textContent = article.title;
+  journalModalMeta.textContent = article.meta;
+
+  journalModalBody.innerHTML = article.body;
+
+  journalModal.classList.add("active");
+  journalModal.setAttribute("aria-hidden", "false");
+
+  document.body.style.overflow = "hidden";
+
+  journalClose.focus();
+}
+
+
+/* Fechar */
+
+function closeJournalArticle() {
+
+  journalModal.classList.remove("active");
+  journalModal.setAttribute("aria-hidden", "true");
+
+  document.body.style.overflow = "";
+
+}
+
+
+/* Clique nos artigos */
+
+document.querySelectorAll(".journal-card").forEach(card => {
+
+  card.addEventListener("click", () => {
+    openJournalArticle(card.dataset.journal);
+  });
+
+  card.addEventListener("keydown", event => {
+
+    if (event.key === "Enter" || event.key === " ") {
+
+      event.preventDefault();
+
+      openJournalArticle(card.dataset.journal);
+
+    }
+
+  });
+
+});
+
+
+/* Botão fechar */
+
+journalClose.addEventListener("click", closeJournalArticle);
+
+
+/* Clique fora do artigo */
+
+document.querySelectorAll("[data-close-journal]").forEach(element => {
+
+  element.addEventListener("click", closeJournalArticle);
+
+});
+
+
+/* ESC */
+
+document.addEventListener("keydown", event => {
+
+  if (
+    event.key === "Escape" &&
+    journalModal.classList.contains("active")
+  ) {
+
+    closeJournalArticle();
+
+  }
+
+});
+</script>
 </script>
 </body>
 </html>
