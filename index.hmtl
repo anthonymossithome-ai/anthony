@@ -292,7 +292,7 @@
     opacity: 0;
   }
 
-  . reveal image-reveal.in {
+  .reveal.image-reveal.in {
     animation:
       imageReveal 1.1s cubic-bezier(.2,.6,.2,1) both;
   }
@@ -484,6 +484,36 @@
       </div>
     </div>
   </section>
+
+
+  <!-- ================================
+       MODAL — EM DESTAQUE
+  ================================ -->
+  <div id="featuredModal"
+       class="journal-modal"
+       aria-hidden="true"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="featuredModalTitle">
+
+    <div class="absolute inset-0" data-close-featured></div>
+
+    <article class="journal-modal-content">
+      <button id="featuredClose"
+              class="journal-close"
+              type="button"
+              aria-label="Fechar matéria">×</button>
+
+      <img id="featuredModalImage" src="" alt="">
+
+      <div class="journal-article">
+        <p id="featuredModalCategory" class="journal-article-category"></p>
+        <h2 id="featuredModalTitle" class="journal-article-title"></h2>
+        <p id="featuredModalMeta" class="journal-article-meta"></p>
+        <div id="featuredModalBody" class="journal-article-body"></div>
+      </div>
+    </article>
+  </div>
 
   <section id="looks" class="bg-ink">
     <div class="mx-auto max-w-[1440px] px-6 py-20 md:px-10 md:py-28">
@@ -1117,6 +1147,93 @@
   </script>
 
   <script>
+/* ================================
+   EM DESTAQUE — ABRIR MATÉRIAS
+================================ */
+
+const featuredArticles = {
+  costura: {
+    category: "Entrevista",
+    title: "A Costura Lenta",
+    meta: "06 min de leitura",
+    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1400&q=85",
+    alt: "Alfaiataria em lã sob luz natural",
+    body: `
+      <p>Dentro de um ateliê onde o tempo parece passar de outra maneira, cada peça nasce de movimentos precisos e repetidos. A costura manual transforma o ato de vestir em uma experiência mais próxima, onde pequenas imperfeições revelam o trabalho de quem esteve por trás da roupa.</p>
+      <p>Em uma época dominada pela velocidade, escolher uma peça feita lentamente também significa escolher uma relação diferente com aquilo que usamos.</p>
+      <h2>O tempo como matéria</h2>
+      <p>Uma peça não começa quando chega à vitrine. Antes disso existem escolha de tecido, corte, prova, ajustes e acabamento. Cada etapa acrescenta uma pequena decisão à forma final.</p>
+      <p>É nesse intervalo entre matéria e roupa que o trabalho artesanal encontra sua força: não na pressa de terminar, mas na atenção necessária para fazer bem.</p>
+    `
+  },
+
+  la: {
+    category: "Matéria",
+    title: "A Lã que Fala",
+    meta: "05 min de leitura",
+    image: "https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?auto=format&fit=crop&w=1000&q=85",
+    alt: "Textura de lã tricotada à mão",
+    body: `
+      <p>A lã possui uma presença que vai além da aparência. Sua textura, peso e capacidade de conservar calor fazem dela uma matéria que conversa diretamente com o corpo.</p>
+      <p>Em diferentes ateliês, o fio ganha novas interpretações por meio de técnicas manuais, proporções e acabamentos que deixam o processo visível.</p>
+      <h2>Uma matéria que envelhece</h2>
+      <p>Ao contrário de uma superfície completamente uniforme, a lã pode ganhar marcas, volume e pequenas alterações com o uso. O tempo não necessariamente apaga sua identidade; muitas vezes, acrescenta outra camada.</p>
+      <p>Talvez seja por isso que o tecido continue aparecendo em diferentes momentos da moda: porque sua linguagem muda sem deixar de ser reconhecível.</p>
+    `
+  }
+};
+
+const featuredModal = document.getElementById("featuredModal");
+const featuredClose = document.getElementById("featuredClose");
+const featuredModalImage = document.getElementById("featuredModalImage");
+const featuredModalCategory = document.getElementById("featuredModalCategory");
+const featuredModalTitle = document.getElementById("featuredModalTitle");
+const featuredModalMeta = document.getElementById("featuredModalMeta");
+const featuredModalBody = document.getElementById("featuredModalBody");
+
+function openFeaturedArticle(id) {
+  const article = featuredArticles[id];
+  if (!article) return;
+
+  featuredModalImage.src = article.image;
+  featuredModalImage.alt = article.alt;
+  featuredModalCategory.textContent = article.category;
+  featuredModalTitle.textContent = article.title;
+  featuredModalMeta.textContent = article.meta;
+  featuredModalBody.innerHTML = article.body;
+
+  featuredModal.classList.add("active");
+  featuredModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  featuredClose.focus();
+}
+
+function closeFeaturedArticle() {
+  featuredModal.classList.remove("active");
+  featuredModal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+document.querySelectorAll("[data-featured]").forEach(card => {
+  card.addEventListener("click", () => {
+    openFeaturedArticle(card.dataset.featured);
+  });
+});
+
+featuredClose.addEventListener("click", closeFeaturedArticle);
+
+document.querySelectorAll("[data-close-featured]").forEach(element => {
+  element.addEventListener("click", closeFeaturedArticle);
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && featuredModal.classList.contains("active")) {
+    closeFeaturedArticle();
+  }
+});
+</script>
+
+<script>
 /* ================================
    JOURNAL — ABRIR ARTIGOS
 ================================ */
@@ -1937,91 +2054,84 @@ document.addEventListener("keydown", event => {
 
 });
 </script>
-    ...
-</script>
-<!-- ↑ este é o último script que já existe -->
 
 <script>
 (function () {
   const canvas = document.getElementById('heroFrames');
+  if (!canvas) return;
+
   const ctx = canvas.getContext('2d');
-  const frameCount = 30;
-  const fps = 10; // ajuste: mais alto = mais rápido/fluido
+  const frameCount = 7;
+  const fps = 10;
+
+  // Os arquivos precisam estar na raiz do projeto com estes nomes:
+  // frame-0001.jpg até frame-0007.jpg
   const getFrameSrc = i => `/frame-${String(i).padStart(4, '0')}.jpg`;
 
   const images = [];
-  let ready = false;
+  let loadedCount = 0;
   let currentFrame = 0;
   let lastTime = 0;
 
-  function preloadImages() {
-    let loadedCount = 0;
-    for (let i = 1; i <= frameCount; i++) {
-      const img = new Image();
-      img.src = getFrameSrc(i);
-      img.onload = () => {
-        loadedCount++;
-        if (loadedCount === frameCount) {
-          ready = true;
-          resizeCanvas();
-          requestAnimationFrame(animate);
-        }
-      };
-      images.push(img);
-    }
-  }
-
   function resizeCanvas() {
-    canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
-    canvas.height = canvas.offsetHeight * (window.devicePixelRatio || 1);
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = canvas.offsetWidth * dpr;
+    canvas.height = canvas.offsetHeight * dpr;
   }
 
   function drawFrame(index) {
     const img = images[index];
-    if (!img || !img.complete || img.naturalWidth === 0) return;
+    if (!img || !img.complete || !img.naturalWidth) return;
 
     const canvasRatio = canvas.width / canvas.height;
     const imgRatio = img.naturalWidth / img.naturalHeight;
-    let sx, sy, sWidth, sHeight;
+
+    let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
 
     if (imgRatio > canvasRatio) {
-      sHeight = img.naturalHeight;
-      sWidth = sHeight * canvasRatio;
-      sx = (img.naturalWidth - sWidth) / 2;
-      sy = 0;
+      sw = sh * canvasRatio;
+      sx = (img.naturalWidth - sw) / 2;
     } else {
-      sWidth = img.naturalWidth;
-      sHeight = sWidth / canvasRatio;
-      sx = 0;
-      sy = (img.naturalHeight - sHeight) / 2;
+      sh = sw / canvasRatio;
+      sy = (img.naturalHeight - sh) / 2;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
   }
 
   function animate(time) {
     if (!lastTime) lastTime = time;
-    const elapsed = time - lastTime;
 
-    if (elapsed > 1000 / fps) {
+    if (time - lastTime >= 1000 / fps) {
       drawFrame(currentFrame);
-      currentFrame = (currentFrame + 1) % frameCount; // loop infinito
+      currentFrame = (currentFrame + 1) % frameCount;
       lastTime = time;
     }
 
     requestAnimationFrame(animate);
   }
 
+  for (let i = 1; i <= frameCount; i++) {
+    const img = new Image();
+    img.src = getFrameSrc(i);
+    img.onload = () => {
+      loadedCount++;
+      if (loadedCount === frameCount) {
+        resizeCanvas();
+        drawFrame(0);
+        requestAnimationFrame(animate);
+      }
+    };
+    images.push(img);
+  }
+
   window.addEventListener('resize', () => {
     resizeCanvas();
-    if (ready) drawFrame(currentFrame);
+    drawFrame(currentFrame);
   });
-
-  preloadImages();
 })();
 </script>
-<!-- ↑ este é o novo, cole aqui -->
 
 </body>
 </html>
