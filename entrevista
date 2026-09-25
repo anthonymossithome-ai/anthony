@@ -438,9 +438,11 @@
     <div class="grid grid-cols-1 gap-10 md:grid-cols-12">
       <article class="reveal look md:col-span-7">
         <div class="overflow-hidden rounded-sm bg-paper-soft">
-         <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1400&q=80"
-     alt="Alfaiataria em lã sob luz natural"
-     class="image-reveal aspect-[4/3] w-full object-cover"
+       <button onclick="abrirMateria('roupas')" class="group w-full text-left cursor-pointer">
+    <img src="SUA-IMAGEM-AQUI"
+         alt="Roupas em um ateliê"
+         class="w-full h-full object-cover transition duration-700 group-hover:scale-[1.02]">
+</button>
      loading="lazy">
         </div>
         <span class="mt-5 block text-[11px] uppercase tracking-[0.25em] text-accent">Entrevista</span>
@@ -454,9 +456,11 @@
       <div class="md:col-span-5 md:pl-8">
         <article class="reveal look">
           <div class="overflow-hidden rounded-sm bg-paper-soft">
-            <img src="https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?auto=format&fit=crop&w=1000&q=80"
-                 alt="Textura de lã tricotada à mão"
-                 class="aspect-[5/4] w-full object-cover"
+           <button onclick="abrirMateria('noite')" class="group w-full text-left cursor-pointer">
+    <img src="SUA-IMAGEM-AQUI"
+         alt="Moda durante a noite"
+         class="w-full h-full object-cover transition duration-700 group-hover:scale-[1.02]">
+</button>
                  loading="lazy">
           </div>
           <span class="mt-5 block text-[11px] uppercase tracking-[0.25em] text-accent">Matéria</span>
