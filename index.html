@@ -409,7 +409,7 @@
 
   <div class="absolute inset-0 flex items-end">
     <div class="mx-auto w-full max-w-[1440px] px-6 pb-12 md:px-10 md:pb-20">
-      <div class="reveal max-w-[46ch]"
+      <div class="reveal max-w-[46ch]">
         <p class="mb-4 text-[11px] font-medium uppercase tracking-[0.35em] text-paper/80">Editorial · Nº 24</p>
         <h1 class="font-serif text-5xl font-medium leading-[1.02] text-paper md:text-7xl">
           O Silêncio<br>da Forma
@@ -2058,22 +2058,21 @@ document.addEventListener("keydown", event => {
 </script>
 
 <script>
-(function () {
-  const canvas = document.getElementById('heroFrames');
+(() => {
+  const canvas = document.getElementById("heroFrames");
   if (!canvas) return;
 
-  const ctx = canvas.getContext('2d');
-  const frameCount = 7;
+  const ctx = canvas.getContext("2d");
+  const frameCount = 30;
   const fps = 10;
 
-  // Os arquivos precisam estar na raiz do projeto com estes nomes:
-  // frame-0001.jpg até frame-0007.jpg
-  const getFrameSrc = i => `/frame-${String(i).padStart(4, '0')}.jpg`;
-
-  const images = [];
-  let loadedCount = 0;
+  const frames = new Array(frameCount);
   let currentFrame = 0;
   let lastTime = 0;
+  let started = false;
+
+  const getFrameSrc = (number) =>
+    `/frame-${String(number).padStart(4, "0")}.jpg`;
 
   function resizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
@@ -2082,55 +2081,80 @@ document.addEventListener("keydown", event => {
   }
 
   function drawFrame(index) {
-    const img = images[index];
-    if (!img || !img.complete || !img.naturalWidth) return;
+    const image = frames[index];
+
+    if (!image || !image.complete || !image.naturalWidth) return false;
 
     const canvasRatio = canvas.width / canvas.height;
-    const imgRatio = img.naturalWidth / img.naturalHeight;
+    const imageRatio = image.naturalWidth / image.naturalHeight;
 
-    let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
+    let sx = 0;
+    let sy = 0;
+    let sw = image.naturalWidth;
+    let sh = image.naturalHeight;
 
-    if (imgRatio > canvasRatio) {
+    if (imageRatio > canvasRatio) {
       sw = sh * canvasRatio;
-      sx = (img.naturalWidth - sw) / 2;
+      sx = (image.naturalWidth - sw) / 2;
     } else {
       sh = sw / canvasRatio;
-      sy = (img.naturalHeight - sh) / 2;
+      sy = (image.naturalHeight - sh) / 2;
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(image, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+    return true;
+  }
+
+  function nextLoadedFrame(from) {
+    for (let offset = 0; offset < frameCount; offset++) {
+      const index = (from + offset) % frameCount;
+      const image = frames[index];
+
+      if (image && image.complete && image.naturalWidth) {
+        return index;
+      }
+    }
+
+    return -1;
   }
 
   function animate(time) {
-    if (!lastTime) lastTime = time;
-
     if (time - lastTime >= 1000 / fps) {
-      drawFrame(currentFrame);
-      currentFrame = (currentFrame + 1) % frameCount;
-      lastTime = time;
+      const next = nextLoadedFrame(currentFrame);
+
+      if (next !== -1) {
+        drawFrame(next);
+        currentFrame = (next + 1) % frameCount;
+        lastTime = time;
+      }
     }
 
     requestAnimationFrame(animate);
   }
 
-  for (let i = 1; i <= frameCount; i++) {
-    const img = new Image();
-    img.src = getFrameSrc(i);
-    img.onload = () => {
-      loadedCount++;
-      if (loadedCount === frameCount) {
+  for (let index = 0; index < frameCount; index++) {
+    const image = new Image();
+
+    image.onload = () => {
+      if (!started) {
+        started = true;
         resizeCanvas();
-        drawFrame(0);
+        currentFrame = index;
+        drawFrame(index);
+        canvas.classList.add("loaded");
         requestAnimationFrame(animate);
       }
     };
-    images.push(img);
+
+    image.src = getFrameSrc(index + 1);
+    frames[index] = image;
   }
 
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     resizeCanvas();
-    drawFrame(currentFrame);
+    drawFrame((currentFrame - 1 + frameCount) % frameCount);
   });
 })();
 </script>
