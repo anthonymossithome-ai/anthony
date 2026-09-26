@@ -821,15 +821,23 @@
     </div>
   </section>
 
-  <section id="sobre" class="border-t border-ink/10 bg-paper-soft">
-    <div class="mx-auto grid max-w-[1440px] grid-cols-1 gap-12 px-6 py-20 md:grid-cols-12 md:px-10 md:py-28">
-      <div class="reveal md:col-span-5">
-        <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=1000&q=80"
-             alt="Ateliê de costura"
-             class="aspect-[4/5] w-full rounded-sm object-cover"
-             loading="lazy">
-      </div>
-
+ <div class="reveal look md:col-span-5">
+  <button
+    type="button"
+    data-featured="sobre"
+    class="group block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+    aria-label="Abrir: Sobre a SOMM"
+  >
+    <div class="overflow-hidden rounded-sm bg-paper-soft">
+      <img
+        src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=1000&q=80"
+        alt="Ateliê de costura"
+        class="aspect-[4/5] w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+        loading="lazy"
+      >
+    </div>
+  </button>
+</div>
       <div class="reveal md:col-span-6 md:col-start-7 md:self-center">
         <p class="text-[11px] uppercase tracking-[0.3em] text-accent">Sobre a SOMM</p>
         <h2 class="mt-4 font-serif text-3xl font-medium leading-tight md:text-5xl">Um diário sobre moda, forma e afetos</h2>
@@ -1181,21 +1189,19 @@ const featuredArticles = {
     `
   },
 
-  la: {
-    category: "Matéria",
-    title: "A Lã que Fala",
-    meta: "05 min de leitura",
-    image: "https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?auto=format&fit=crop&w=1000&q=85",
-    alt: "Textura de lã tricotada à mão",
+   sobre: {
+    category: "SOMM Editorial",
+    title: "Um diário sobre moda, forma e afetos",
+    meta: "Sobre a revista",
+    image: "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&w=1400&q=85",
+    alt: "Ateliê de costura",
     body: `
-      <p>A lã possui uma presença que vai além da aparência. Sua textura, peso e capacidade de conservar calor fazem dela uma matéria que conversa diretamente com o corpo.</p>
-      <p>Em diferentes ateliês, o fio ganha novas interpretações por meio de técnicas manuais, proporções e acabamentos que deixam o processo visível.</p>
-      <h2>Uma matéria que envelhece</h2>
-      <p>Ao contrário de uma superfície completamente uniforme, a lã pode ganhar marcas, volume e pequenas alterações com o uso. O tempo não necessariamente apaga sua identidade; muitas vezes, acrescenta outra camada.</p>
-      <p>Talvez seja por isso que o tecido continue aparecendo em diferentes momentos da moda: porque sua linguagem muda sem deixar de ser reconhecível.</p>
+      <p>A SOMM é uma revista editorial independente publicada em português. Escrevemos sobre alfaiataria, tecidos, ofício e as pessoas que vestem o que fazem.</p>
+      <p>Acreditamos que cada peça carrega tempo, escolha e memória. Por isso, olhamos para a moda com calma — longe da tendência descartável.</p>
+      <h2>Feita para permanecer</h2>
+      <p>Publicamos histórias que valorizam a forma, a matéria e o gesto humano por trás de cada roupa.</p>
     `
   }
-};
 
 const featuredModal = document.getElementById("featuredModal");
 const featuredClose = document.getElementById("featuredClose");
