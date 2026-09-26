@@ -720,14 +720,86 @@
 </div>
       
       <div class="grid grid-cols-1 gap-10 md:grid-cols-3">
-      <!-- ARTIGO 1 -->
-<article
-  class="reveal look journal-card"
-  data-journal="guarda-roupa"
-  tabindex="0"
-  role="button"
-  aria-label="Ler artigo: Como montar um guarda-roupa essencial"
->
+
+  <article class="reveal look">
+    <button
+      type="button"
+      class="journal-card group block w-full cursor-pointer border-0 bg-transparent p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      data-journal="guarda-roupa"
+      aria-label="Ler artigo: Como montar um guarda-roupa essencial"
+    >
+      <span class="block overflow-hidden rounded-sm">
+        <img
+          src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=80"
+          alt="Peças dobradas em paleta neutra"
+          class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+          loading="lazy"
+        >
+      </span>
+    </button>
+
+    <div class="mt-5">
+      <p class="text-xs uppercase tracking-[0.2em] text-[#9c4a2e]">Guia</p>
+      <h3 class="mt-2 font-serif text-2xl">Como montar um guarda-roupa essencial</h3>
+      <p class="mt-3 text-sm leading-6 text-[#8a8378]">
+        Doze peças, uma década. O método de quem compra pouco e veste sempre.
+      </p>
+    </div>
+  </article>
+
+  <article class="reveal look">
+    <button
+      type="button"
+      class="journal-card group block w-full cursor-pointer border-0 bg-transparent p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      data-journal="semana-moda"
+      aria-label="Ler artigo: Bastidores da semana de moda"
+    >
+      <span class="block overflow-hidden rounded-sm">
+        <img
+          src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=900&q=80"
+          alt="Bastidores de desfile"
+          class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+          loading="lazy"
+        >
+      </span>
+    </button>
+
+    <div class="mt-5">
+      <p class="text-xs uppercase tracking-[0.2em] text-[#9c4a2e]">Semana</p>
+      <h3 class="mt-2 font-serif text-2xl">Bastidores da semana de moda</h3>
+      <p class="mt-3 text-sm leading-6 text-[#8a8378]">
+        O que aconteceu longe da passarela — e por que importa mais.
+      </p>
+    </div>
+  </article>
+
+  <article class="reveal look">
+    <button
+      type="button"
+      class="journal-card group block w-full cursor-pointer border-0 bg-transparent p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      data-journal="oficio-couro"
+      aria-label="Ler artigo: O ofício do couro no Brasil"
+    >
+      <span class="block overflow-hidden rounded-sm">
+        <img
+          src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=80"
+          alt="Detalhe de costura em couro"
+          class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-[1.04]"
+          loading="lazy"
+        >
+      </span>
+    </button>
+
+    <div class="mt-5">
+      <p class="text-xs uppercase tracking-[0.2em] text-[#9c4a2e]">Ofício</p>
+      <h3 class="mt-2 font-serif text-2xl">O ofício do couro no Brasil</h3>
+      <p class="mt-3 text-sm leading-6 text-[#8a8378]">
+        De Franca a Belo Jardim: as mãos que ainda cortam sem molde.
+      </p>
+    </div>
+  </article>
+
+</div>
   <img
     src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=900&q=80"
     alt="Peças dobradas em paleta neutra"
@@ -1271,7 +1343,7 @@ document.addEventListener("keydown", event => {
     — ABRIR ARTIGOS
 ================================ */
 
-const id sobreArticles = {
+const journalArticles = {
 
   "guarda-roupa": {
     category: "Guia",
